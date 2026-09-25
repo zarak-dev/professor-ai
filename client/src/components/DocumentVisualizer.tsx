@@ -30,15 +30,15 @@ type VisState = 'intro' | 'loading' | 'display' | 'error';
 
 const importanceTokens = {
   high: {
-    border: 'border-l-blue-600',
+    border: 'border-l-[#213448]',
     badgeColor: 'blue' as const,
   },
   medium: {
-    border: 'border-l-slate-400',
+    border: 'border-l-[#547792]',
     badgeColor: 'slate' as const,
   },
   low: {
-    border: 'border-l-slate-300',
+    border: 'border-l-[#94B4C1]',
     badgeColor: 'slate' as const,
   },
 };
@@ -119,24 +119,24 @@ export default function DocumentVisualizer({ documentId }: DocumentVisualizerPro
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -12 }}
-            className="border border-slate-200 bg-white rounded-xl p-8 sm:p-10 text-center max-w-2xl mx-auto shadow-xs"
+            className="border border-[#E2DBD0] bg-white rounded-xl p-8 sm:p-10 text-center max-w-2xl mx-auto shadow-xs"
           >
-            <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mx-auto mb-4 border border-blue-100">
-              <Network size={24} />
+            <div className="w-12 h-12 rounded-xl bg-[#F0F5F8] text-[#213448] flex items-center justify-center mx-auto mb-4 border border-[#CADDE6]">
+              <Network size={24} className="text-[#547792]" />
             </div>
-            <h2 className="text-xl font-semibold tracking-tight text-slate-900 mb-2">
+            <h2 className="text-xl font-semibold tracking-tight text-[#213448] mb-2">
               Document Concept Map
             </h2>
-            <p className="text-xs sm:text-sm text-slate-500 mb-6 max-w-md mx-auto leading-relaxed">
+            <p className="text-xs sm:text-sm text-[#547792] mb-6 max-w-md mx-auto leading-relaxed">
               Explore an interconnected knowledge map identifying core themes, takeaways, and relational links across your document.
             </p>
 
             <div className="flex items-center justify-center gap-2 text-xs mb-8">
-              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-200 text-xs font-medium">
-                <Eye size={11} className="text-blue-600" /> Topic Architecture
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#F4EFE6] text-[#213448] border border-[#E2DBD0] text-xs font-medium">
+                <Eye size={11} className="text-[#547792]" /> Topic Architecture
               </span>
-              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-200 text-xs font-medium">
-                <Zap size={11} className="text-emerald-600" /> Relational Connections
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#ECF5F3] text-[#235B54] border border-[#CADDE6] text-xs font-medium">
+                <Zap size={11} className="text-[#2C665F]" /> Relational Connections
               </span>
             </div>
 

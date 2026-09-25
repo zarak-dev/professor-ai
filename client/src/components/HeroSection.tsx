@@ -26,8 +26,8 @@ export default function HeroSection() {
       >
         {/* Pill Badge */}
         <motion.div variants={item} className="mb-6">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200/80">
-            <Sparkles size={12} className="text-blue-600" />
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-[#F0F5F8] text-[#213448] border border-[#CADDE6]">
+            <Sparkles size={12} className="text-[#547792]" />
             AI Document Intelligence
           </span>
         </motion.div>
@@ -35,16 +35,16 @@ export default function HeroSection() {
         {/* Hero Title */}
         <motion.h1
           variants={item}
-          className="text-3xl sm:text-5xl md:text-6xl font-semibold tracking-tight text-slate-900 leading-[1.15] mb-6"
+          className="text-3xl sm:text-5xl md:text-6xl font-semibold tracking-tight text-[#213448] leading-[1.15] mb-6"
         >
           Transform complex documents into{' '}
-          <span className="text-blue-600">actionable knowledge</span>
+          <span className="text-[#547792]">actionable knowledge</span>
         </motion.h1>
 
         {/* Subtitle */}
         <motion.p
           variants={item}
-          className="text-base sm:text-lg text-slate-600 max-w-2xl leading-relaxed mb-8"
+          className="text-base sm:text-lg text-[#547792] max-w-2xl leading-relaxed mb-8"
         >
           Upload research papers, lecture notes, and technical textbooks.
           Interact via grounded conversational AI, test retention with auto-generated
@@ -103,15 +103,15 @@ export default function HeroSection() {
           <motion.div
             key={feature.title}
             variants={item}
-            className="p-5 rounded-xl border border-slate-200/90 bg-white shadow-xs hover:border-slate-300 hover:shadow-sm transition-all"
+            className="p-5 rounded-xl border border-[#E2DBD0] bg-white shadow-xs hover:border-[#94B4C1] hover:shadow-sm transition-all"
           >
-            <div className="w-9 h-9 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center mb-3.5 border border-blue-100">
+            <div className="w-9 h-9 rounded-lg bg-[#F0F5F8] text-[#213448] flex items-center justify-center mb-3.5 border border-[#CADDE6]">
               <feature.icon size={18} />
             </div>
-            <h3 className="text-sm font-semibold text-slate-900 mb-1">
+            <h3 className="text-sm font-semibold text-[#213448] mb-1">
               {feature.title}
             </h3>
-            <p className="text-xs text-slate-500 leading-relaxed">
+            <p className="text-xs text-[#547792] leading-relaxed">
               {feature.description}
             </p>
           </motion.div>

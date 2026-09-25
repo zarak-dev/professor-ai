@@ -268,22 +268,22 @@ export default function FlashcardPanel({ documentId }: FlashcardPanelProps) {
           >
             {/* Header progress */}
             <div className="flex items-center justify-between mb-2">
-              <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-[#547792]">
                 Card {currentIdx + 1} of {cards.length}
               </span>
               <div className="flex items-center gap-2">
-                <span className="text-[11px] font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200/70">
+                <span className="text-[11px] font-medium text-[#2C665F] bg-[#ECF5F3] px-2 py-0.5 rounded border border-[#CADDE6]">
                   {mastered.size} mastered
                 </span>
-                <span className="text-[11px] font-medium text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-200/70">
+                <span className="text-[11px] font-medium text-[#7A5726] bg-[#FAF3E6] px-2 py-0.5 rounded border border-[#EAE0CF]">
                   {reviewing.size} review
                 </span>
               </div>
             </div>
 
-            <div className="w-full bg-slate-100 rounded-full h-1.5 mb-5 overflow-hidden border border-slate-200/50">
+            <div className="w-full bg-[#F4EFE6] rounded-full h-1.5 mb-5 overflow-hidden border border-[#E2DBD0]">
               <motion.div
-                className="h-full bg-blue-600 rounded-full"
+                className="h-full bg-[#213448] rounded-full"
                 animate={{ width: `${progressPct}%` }}
                 transition={{ ease: 'easeOut', duration: 0.25 }}
               />
@@ -302,23 +302,23 @@ export default function FlashcardPanel({ documentId }: FlashcardPanelProps) {
               >
                 {/* Front Side */}
                 <div
-                  className="border border-slate-200 bg-white rounded-xl p-8 sm:p-12 min-h-[280px] flex flex-col items-center justify-center text-center shadow-xs hover:border-slate-300 transition-colors"
+                  className="border border-[#E2DBD0] bg-white rounded-xl p-8 sm:p-12 min-h-[280px] flex flex-col items-center justify-center text-center shadow-xs hover:border-[#94B4C1] transition-colors"
                   style={{ backfaceVisibility: 'hidden' }}
                 >
                   <Badge color="blue" className="mb-6">
                     {card.category}
                   </Badge>
-                  <p className="text-lg sm:text-2xl font-semibold text-slate-900 leading-relaxed max-w-md">
+                  <p className="text-lg sm:text-2xl font-semibold text-[#213448] leading-relaxed max-w-md">
                     {card.front}
                   </p>
-                  <p className="text-xs text-slate-400 mt-6 flex items-center gap-1.5 font-medium">
+                  <p className="text-xs text-[#94B4C1] mt-6 flex items-center gap-1.5 font-medium">
                     <MousePointerClick size={13} /> Click or press Space to flip
                   </p>
                 </div>
 
                 {/* Back Side */}
                 <div
-                  className="border border-blue-200 bg-slate-50 text-slate-900 rounded-xl p-8 sm:p-12 min-h-[280px] flex flex-col items-center justify-center text-center shadow-xs absolute inset-0"
+                  className="border border-[#CADDE6] bg-[#FAF8F5] text-[#213448] rounded-xl p-8 sm:p-12 min-h-[280px] flex flex-col items-center justify-center text-center shadow-xs absolute inset-0"
                   style={{
                     backfaceVisibility: 'hidden',
                     transform: 'rotateY(180deg)',
@@ -327,10 +327,10 @@ export default function FlashcardPanel({ documentId }: FlashcardPanelProps) {
                   <Badge color="slate" className="mb-6">
                     {card.category}
                   </Badge>
-                  <p className="text-sm sm:text-base text-slate-800 leading-relaxed max-w-md">
+                  <p className="text-sm sm:text-base text-[#213448] leading-relaxed max-w-md">
                     {card.back}
                   </p>
-                  <p className="text-xs text-slate-400 mt-6 font-medium">
+                  <p className="text-xs text-[#94B4C1] mt-6 font-medium">
                     Assess your mastery below
                   </p>
                 </div>

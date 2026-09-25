@@ -239,28 +239,28 @@ export default function QuizPanel({ documentId }: QuizPanelProps) {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -12 }}
             transition={{ duration: 0.2 }}
-            className="border border-slate-200 bg-white rounded-xl p-6 sm:p-8 shadow-xs"
+            className="border border-[#E2DBD0] bg-white rounded-xl p-6 sm:p-8 shadow-xs"
           >
             {/* Header / Progress bar */}
             <div className="flex items-center justify-between mb-2">
-              <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-[#547792]">
                 Question {currentQ + 1} of {totalQ}
               </span>
-              <span className="text-xs font-medium text-slate-600 bg-slate-100 px-2 py-0.5 rounded border border-slate-200/60">
+              <span className="text-xs font-medium text-[#213448] bg-[#F4EFE6] px-2 py-0.5 rounded border border-[#E2DBD0]">
                 Score: {score}
               </span>
             </div>
 
-            <div className="w-full bg-slate-100 rounded-full h-1.5 mb-6 overflow-hidden border border-slate-200/50">
+            <div className="w-full bg-[#F4EFE6] rounded-full h-1.5 mb-6 overflow-hidden border border-[#E2DBD0]">
               <motion.div
-                className="h-full bg-blue-600 rounded-full"
+                className="h-full bg-[#213448] rounded-full"
                 animate={{ width: `${progressPct}%` }}
                 transition={{ ease: 'easeOut', duration: 0.25 }}
               />
             </div>
 
             {/* Question Text */}
-            <h3 className="text-base sm:text-lg font-semibold text-slate-900 mb-5 leading-snug">
+            <h3 className="text-base sm:text-lg font-semibold text-[#213448] mb-5 leading-snug">
               {question.question}
             </h3>
 
@@ -268,19 +268,19 @@ export default function QuizPanel({ documentId }: QuizPanelProps) {
             <div className="space-y-2.5 mb-6">
               {question.options.map((opt, idx) => {
                 let optionStyle =
-                  'border border-slate-200 bg-white text-slate-800 hover:border-slate-300 hover:bg-slate-50/80 cursor-pointer';
+                  'border border-[#E2DBD0] bg-white text-[#213448] hover:border-[#94B4C1] hover:bg-[#FAF8F5] cursor-pointer';
 
-                let letterStyle = 'bg-slate-100 text-slate-600 border border-slate-200';
+                let letterStyle = 'bg-[#F4EFE6] text-[#213448] border border-[#E2DBD0]';
 
                 if (answered) {
                   if (idx === question.correct) {
-                    optionStyle = 'border-emerald-500 bg-emerald-50 text-emerald-950 font-medium cursor-default';
-                    letterStyle = 'bg-emerald-600 text-white border-emerald-600';
+                    optionStyle = 'border-[#2C665F] bg-[#ECF5F3] text-[#213448] font-medium cursor-default';
+                    letterStyle = 'bg-[#2C665F] text-white border-[#2C665F]';
                   } else if (idx === selected && idx !== question.correct) {
                     optionStyle = 'border-red-400 bg-red-50 text-red-950 font-medium cursor-default';
                     letterStyle = 'bg-red-600 text-white border-red-600';
                   } else {
-                    optionStyle = 'border-slate-200 bg-white opacity-40 cursor-default';
+                    optionStyle = 'border-[#E2DBD0] bg-white opacity-40 cursor-default';
                   }
                 }
 

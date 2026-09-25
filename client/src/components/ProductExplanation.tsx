@@ -62,15 +62,15 @@ const item = {
 
 export default function ProductExplanation() {
   return (
-    <section id="features" className="max-w-6xl mx-auto px-4 sm:px-6 py-16 border-t border-slate-200/80">
+    <section id="features" className="max-w-6xl mx-auto px-4 sm:px-6 py-16 border-t border-[#E2DBD0]">
       <div className="max-w-3xl mb-12">
-        <p className="text-xs font-semibold uppercase tracking-wider text-blue-600 mb-1.5">
+        <p className="text-xs font-semibold uppercase tracking-wider text-[#547792] mb-1.5">
           Product Overview
         </p>
-        <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-slate-900 mb-3">
+        <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-[#213448] mb-3">
           What is The Professor?
         </h2>
-        <p className="text-sm text-slate-600 leading-relaxed">
+        <p className="text-sm text-[#547792] leading-relaxed">
           The Professor is an AI-powered document intelligence workspace. When you upload a PDF or study document,
           The Professor instantly converts passive reading material into an active, interactive workspace — allowing you
           to chat with the text, test your recall, study flashcards, and visualize concept relationships.
@@ -90,15 +90,15 @@ export default function ProductExplanation() {
             <motion.div
               key={cap.title}
               variants={item}
-              className="p-5 rounded-xl border border-slate-200/90 bg-white shadow-xs hover:border-slate-300 hover:shadow-sm transition-all"
+              className="p-5 rounded-xl border border-[#E2DBD0] bg-white shadow-xs hover:border-[#94B4C1] hover:shadow-sm transition-all"
             >
-              <div className="w-9 h-9 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center mb-3.5 border border-blue-100">
+              <div className="w-9 h-9 rounded-lg bg-[#F0F5F8] text-[#213448] flex items-center justify-center mb-3.5 border border-[#CADDE6]">
                 <Icon size={18} />
               </div>
-              <h3 className="text-sm font-semibold text-slate-900 mb-1.5">
+              <h3 className="text-sm font-semibold text-[#213448] mb-1.5">
                 {cap.title}
               </h3>
-              <p className="text-xs text-slate-500 leading-relaxed">
+              <p className="text-xs text-[#547792] leading-relaxed">
                 {cap.description}
               </p>
             </motion.div>

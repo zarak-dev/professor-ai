@@ -16,21 +16,21 @@ export const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   const baseClasses =
-    'inline-flex items-center justify-center gap-2 font-medium text-sm transition-all duration-150 cursor-pointer select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-1 disabled:opacity-50 disabled:pointer-events-none rounded-md';
+    'inline-flex items-center justify-center gap-2 font-medium text-sm transition-all duration-150 cursor-pointer select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#547792] focus-visible:ring-offset-1 disabled:opacity-50 disabled:pointer-events-none rounded-md';
 
   const variantClasses = {
     primary:
-      'bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800 shadow-xs border border-transparent',
+      'bg-[#213448] text-white hover:bg-[#182736] active:bg-[#121F2D] shadow-xs border border-transparent',
     secondary:
-      'bg-slate-100 text-slate-800 hover:bg-slate-200 active:bg-slate-300 border border-slate-200/80',
+      'bg-[#F4EFE6] text-[#213448] hover:bg-[#EAE0CF] active:bg-[#DFD3BF] border border-[#E2DBD0]',
     outline:
-      'bg-white text-slate-700 hover:bg-slate-50 hover:text-slate-900 border border-slate-200 shadow-xs',
+      'bg-white text-[#213448] hover:bg-[#FAF8F5] hover:text-[#182736] hover:border-[#CADDE6] border border-[#E2DBD0] shadow-xs',
     danger:
       'bg-red-600 text-white hover:bg-red-700 active:bg-red-800 shadow-xs border border-transparent',
     success:
-      'bg-emerald-600 text-white hover:bg-emerald-700 active:bg-emerald-800 shadow-xs border border-transparent',
+      'bg-[#2C665F] text-white hover:bg-[#23534D] active:bg-[#1B423D] shadow-xs border border-transparent',
     ghost:
-      'bg-transparent text-slate-600 hover:bg-slate-100 hover:text-slate-900 border border-transparent',
+      'bg-transparent text-[#547792] hover:bg-[#F4EFE6] hover:text-[#213448] border border-transparent',
   };
 
   const sizeClasses = {

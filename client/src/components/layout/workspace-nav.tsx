@@ -46,7 +46,7 @@ export const WorkspaceNav: React.FC<WorkspaceNavProps> = ({ documentId }) => {
   ];
 
   return (
-    <div className="w-full border-b border-slate-200 bg-white/95 backdrop-blur-md sticky top-14 z-30">
+    <div className="w-full border-b border-[#E2DBD0] bg-[#FAF8F5]/95 backdrop-blur-md sticky top-14 z-30">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <nav
           className="flex items-center gap-1 overflow-x-auto no-scrollbar py-1"
@@ -64,19 +64,19 @@ export const WorkspaceNav: React.FC<WorkspaceNavProps> = ({ documentId }) => {
                 href={tab.href}
                 className={`relative flex items-center gap-2 px-3 py-2 text-xs sm:text-sm font-medium transition-colors whitespace-nowrap select-none rounded-md ${
                   isActive
-                    ? 'text-blue-600 bg-blue-50/80 font-semibold'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                    ? 'text-[#213448] bg-[#EAE0CF]/50 font-semibold'
+                    : 'text-[#547792] hover:text-[#213448] hover:bg-[#F4EFE6]'
                 }`}
                 aria-current={isActive ? 'page' : undefined}
               >
                 <Icon
                   size={15}
-                  className={isActive ? 'text-blue-600' : 'text-slate-400'}
+                  className={isActive ? 'text-[#213448]' : 'text-[#94B4C1]'}
                 />
                 <span>{tab.name}</span>
                 {isActive && (
                   <span
-                    className="absolute -bottom-1 left-2 right-2 h-0.5 bg-blue-600 rounded-full"
+                    className="absolute -bottom-1 left-2 right-2 h-0.5 bg-[#213448] rounded-full"
                     aria-hidden="true"
                   />
                 )}

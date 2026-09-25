@@ -27,7 +27,7 @@ export const Navbar = () => {
   ];
 
   return (
-    <header className="w-full fixed top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200/80">
+    <header className="w-full fixed top-0 z-50 bg-[#FAF8F5]/90 backdrop-blur-md border-b border-[#E2DBD0]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
         {/* Brand Logo */}
         <div className="flex items-center gap-6">
@@ -35,14 +35,14 @@ export const Navbar = () => {
             href={isAuthenticated ? "/documents" : "/"}
             className="flex items-center gap-2.5 group select-none"
           >
-            <div className="w-7 h-7 rounded-md bg-blue-600 flex items-center justify-center text-white shadow-xs">
+            <div className="w-7 h-7 rounded-md bg-[#213448] flex items-center justify-center text-white shadow-xs group-hover:bg-[#182736] transition-colors">
               <GraduationCap size={15} className="stroke-[2.2]" />
             </div>
             <div className="flex items-center gap-1.5">
-              <span className="text-sm font-semibold tracking-tight text-slate-900">
+              <span className="text-sm font-semibold tracking-tight text-[#213448]">
                 The Professor
               </span>
-              <span className="text-[10px] font-medium uppercase tracking-wider px-1.5 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200/60 hidden sm:inline-block">
+              <span className="text-[10px] font-medium uppercase tracking-wider px-1.5 py-0.5 rounded bg-[#F4EFE6] text-[#213448] border border-[#E2DBD0] hidden sm:inline-block">
                 AI Workspace
               </span>
             </div>
@@ -172,7 +172,7 @@ export const Navbar = () => {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.15 }}
-            className="md:hidden border-b border-slate-200 bg-white px-4 py-3 shadow-lg"
+            className="md:hidden border-b border-[#E2DBD0] bg-[#FAF8F5] px-4 py-3 shadow-lg"
           >
             <div className="flex flex-col gap-1.5">
               {isAuthenticated ? (

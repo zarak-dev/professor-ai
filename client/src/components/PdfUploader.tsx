@@ -162,19 +162,19 @@ export default function PdfUploader() {
             onClick={() => inputRef.current?.click()}
             className={`border-2 border-dashed rounded-xl p-8 sm:p-12 text-center cursor-pointer transition-all duration-200 select-none bg-white shadow-xs ${
               state === 'dragging'
-                ? 'border-blue-600 bg-blue-50/50 scale-[1.01]'
-                : 'border-slate-300 hover:border-slate-400 hover:bg-slate-50/60'
+                ? 'border-[#213448] bg-[#F0F5F8] scale-[1.01]'
+                : 'border-[#CADDE6] hover:border-[#94B4C1] hover:bg-[#FAF8F5]'
             }`}
           >
-            <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mx-auto mb-4 border border-blue-100">
-              <Upload size={22} />
+            <div className="w-12 h-12 rounded-xl bg-[#F0F5F8] text-[#213448] flex items-center justify-center mx-auto mb-4 border border-[#CADDE6]">
+              <Upload size={22} className="text-[#547792]" />
             </div>
 
-            <h3 className="text-base sm:text-lg font-semibold text-slate-900 mb-1">
+            <h3 className="text-base sm:text-lg font-semibold text-[#213448] mb-1">
               {state === 'dragging' ? 'Drop PDF to upload' : 'Click to upload or drag and drop'}
             </h3>
 
-            <p className="text-xs text-slate-500 mb-5 max-w-sm mx-auto">
+            <p className="text-xs text-[#547792] mb-5 max-w-sm mx-auto">
               {isAuthenticated
                 ? 'PDF documents up to 20MB. Lecture slides, research papers, study notes, or reports.'
                 : 'PDF documents up to 5MB (Guest Exploration Mode). Sign in for 20MB files & permanent storage.'}
@@ -186,7 +186,7 @@ export default function PdfUploader() {
               size="sm"
               className="pointer-events-none"
             >
-              <FileText size={14} className="mr-1.5 text-slate-400" />
+              <FileText size={14} className="mr-1.5 text-[#94B4C1]" />
               Select PDF File
             </Button>
           </motion.div>
@@ -198,23 +198,23 @@ export default function PdfUploader() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -12 }}
-            className="border border-slate-200 bg-white rounded-xl p-8 sm:p-10 text-center shadow-xs"
+            className="border border-[#E2DBD0] bg-white rounded-xl p-8 sm:p-10 text-center shadow-xs"
           >
-            <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mx-auto mb-4 border border-blue-100">
-              <Loader2 size={24} className="animate-spin" />
+            <div className="w-12 h-12 rounded-xl bg-[#F0F5F8] text-[#213448] flex items-center justify-center mx-auto mb-4 border border-[#CADDE6]">
+              <Loader2 size={24} className="animate-spin text-[#547792]" />
             </div>
 
-            <h3 className="text-base font-semibold text-slate-900 mb-1">
+            <h3 className="text-base font-semibold text-[#213448] mb-1">
               Processing Document
             </h3>
-            <p className="text-xs text-slate-500 mb-5 flex items-center justify-center gap-1.5">
-              <FileText size={13} className="text-slate-400" />
-              <span className="font-medium text-slate-700">{file?.name}</span>
+            <p className="text-xs text-[#547792] mb-5 flex items-center justify-center gap-1.5">
+              <FileText size={13} className="text-[#94B4C1]" />
+              <span className="font-medium text-[#213448]">{file?.name}</span>
             </p>
 
-            <div className="w-full max-w-md mx-auto bg-slate-100 rounded-full h-2 mb-2 overflow-hidden border border-slate-200/60">
+            <div className="w-full max-w-md mx-auto bg-[#F4EFE6] rounded-full h-2 mb-2 overflow-hidden border border-[#E2DBD0]">
               <motion.div
-                className="bg-blue-600 h-full rounded-full"
+                className="bg-[#213448] h-full rounded-full"
                 initial={{ width: 0 }}
                 animate={{ width: `${progress}%` }}
                 transition={{ ease: 'easeOut' }}

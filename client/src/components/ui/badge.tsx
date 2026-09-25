@@ -13,23 +13,23 @@ export const Badge: React.FC<BadgeProps> = ({
   ...props
 }) => {
   const subtleMap = {
-    blue: 'bg-blue-50 text-blue-700 border-blue-200/80',
-    mint: 'bg-emerald-50 text-emerald-700 border-emerald-200/80',
-    yellow: 'bg-amber-50 text-amber-700 border-amber-200/80',
-    pink: 'bg-rose-50 text-rose-700 border-rose-200/80',
-    purple: 'bg-purple-50 text-purple-700 border-purple-200/80',
-    peach: 'bg-orange-50 text-orange-700 border-orange-200/80',
-    slate: 'bg-slate-100 text-slate-700 border-slate-200',
+    blue: 'bg-[#F0F5F8] text-[#213448] border-[#CADDE6]',
+    slate: 'bg-[#F4EFE6] text-[#213448] border-[#E2DBD0]',
+    mint: 'bg-[#ECF5F3] text-[#235B54] border-[#CADDE6]',
+    yellow: 'bg-[#FAF3E6] text-[#7A5726] border-[#EAE0CF]',
+    pink: 'bg-[#FAECEC] text-[#8E3030] border-[#F8D7D7]',
+    purple: 'bg-[#F3EFF8] text-[#4E4072] border-[#DDD4EC]',
+    peach: 'bg-[#FAEDE4] text-[#86461D] border-[#F0D5C3]',
   };
 
   const outlineMap = {
-    blue: 'bg-transparent text-blue-700 border-blue-300',
-    mint: 'bg-transparent text-emerald-700 border-emerald-300',
-    yellow: 'bg-transparent text-amber-700 border-amber-300',
-    pink: 'bg-transparent text-rose-700 border-rose-300',
-    purple: 'bg-transparent text-purple-700 border-purple-300',
-    peach: 'bg-transparent text-orange-700 border-orange-300',
-    slate: 'bg-transparent text-slate-700 border-slate-300',
+    blue: 'bg-transparent text-[#213448] border-[#CADDE6]',
+    slate: 'bg-transparent text-[#547792] border-[#E2DBD0]',
+    mint: 'bg-transparent text-[#235B54] border-[#CADDE6]',
+    yellow: 'bg-transparent text-[#7A5726] border-[#EAE0CF]',
+    pink: 'bg-transparent text-[#8E3030] border-[#F8D7D7]',
+    purple: 'bg-transparent text-[#4E4072] border-[#DDD4EC]',
+    peach: 'bg-transparent text-[#86461D] border-[#F0D5C3]',
   };
 
   const styleClass = variant === 'outline' ? outlineMap[color] : subtleMap[color];

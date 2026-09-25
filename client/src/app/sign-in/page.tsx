@@ -62,16 +62,16 @@ function SignInForm() {
         transition={{ duration: 0.3 }}
         className="w-full max-w-md"
       >
-        <div className="border border-slate-200 bg-white shadow-sm rounded-xl p-6 sm:p-8">
+        <div className="border border-[#E2DBD0] bg-white shadow-sm rounded-xl p-6 sm:p-8">
           {/* Header */}
           <div className="text-center mb-6">
-            <div className="w-10 h-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center mx-auto mb-3 border border-blue-100">
-              <GraduationCap size={20} />
+            <div className="w-10 h-10 rounded-lg bg-[#F0F5F8] text-[#213448] flex items-center justify-center mx-auto mb-3 border border-[#CADDE6]">
+              <GraduationCap size={20} className="text-[#213448]" />
             </div>
-            <h1 className="text-xl sm:text-2xl font-semibold tracking-tight text-slate-900 mb-1">
+            <h1 className="text-xl sm:text-2xl font-semibold tracking-tight text-[#213448] mb-1">
               {mode === 'login' ? 'Welcome back' : 'Create an account'}
             </h1>
-            <p className="text-xs sm:text-sm text-slate-500">
+            <p className="text-xs sm:text-sm text-[#547792]">
               {mode === 'login'
                 ? 'Sign in to access your document workspace'
                 : 'Get started with The Professor AI workspace'}
@@ -79,8 +79,8 @@ function SignInForm() {
           </div>
 
           {isClaiming && (
-            <div className="mb-6 p-3 rounded-lg bg-blue-50 border border-blue-200/80 text-xs text-blue-800 flex items-start gap-2.5">
-              <Sparkles size={16} className="text-blue-600 shrink-0 mt-0.5" />
+            <div className="mb-6 p-3 rounded-lg bg-[#FAF3E6] border border-[#EAE0CF] text-xs text-[#7A5726] flex items-start gap-2.5">
+              <Sparkles size={16} className="text-[#547792] shrink-0 mt-0.5" />
               <span>
                 <strong>Save Your Work:</strong> Register or sign in below to permanently save your guest document, quizzes, and flashcards to your account.
               </span>
@@ -88,14 +88,14 @@ function SignInForm() {
           )}
 
           {/* Segmented Mode Selector */}
-          <div className="grid grid-cols-2 p-1 rounded-lg bg-slate-100 mb-6">
+          <div className="grid grid-cols-2 p-1 rounded-lg bg-[#F4EFE6] border border-[#E2DBD0] mb-6">
             <button
               type="button"
               onClick={() => { setMode('login'); setError(''); }}
               className={`py-2 text-xs sm:text-sm font-medium rounded-md transition-all flex items-center justify-center gap-1.5 ${
                 mode === 'login'
-                  ? 'bg-white text-slate-900 shadow-xs font-semibold'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-white text-[#213448] shadow-xs font-semibold'
+                  : 'text-[#547792] hover:text-[#213448]'
               }`}
             >
               <LogIn size={14} />
@@ -106,8 +106,8 @@ function SignInForm() {
               onClick={() => { setMode('register'); setError(''); }}
               className={`py-2 text-xs sm:text-sm font-medium rounded-md transition-all flex items-center justify-center gap-1.5 ${
                 mode === 'register'
-                  ? 'bg-white text-slate-900 shadow-xs font-semibold'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-white text-[#213448] shadow-xs font-semibold'
+                  : 'text-[#547792] hover:text-[#213448]'
               }`}
             >
               <UserPlus size={14} />
