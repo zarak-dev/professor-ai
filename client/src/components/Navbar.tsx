@@ -74,11 +74,8 @@ export const Navbar = () => {
           {/* Desktop Navigation for Public / Guest Users */}
           {!isAuthenticated && !isGuest && (
             <nav className="hidden md:flex items-center gap-4 text-xs font-medium text-slate-600">
-              <Link href="/#how-it-works" className="hover:text-slate-900 transition-colors">
-                How It Works
-              </Link>
               <Link href="/#features" className="hover:text-slate-900 transition-colors">
-                Features
+                Overview
               </Link>
             </nav>
           )}
@@ -249,11 +246,11 @@ export const Navbar = () => {
                     Home
                   </Link>
                   <Link
-                    href="/#how-it-works"
+                    href="/#features"
                     onClick={() => setMobileOpen(false)}
                     className="px-3 py-2 rounded-md text-sm font-medium text-slate-700 hover:bg-slate-50"
                   >
-                    How It Works
+                    Overview
                   </Link>
                   <Link
                     href="/upload"

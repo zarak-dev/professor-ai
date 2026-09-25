@@ -5,8 +5,6 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import HeroSection from '@/components/HeroSection';
 import ProductExplanation from '@/components/ProductExplanation';
-import HowItWorks from '@/components/HowItWorks';
-import FeatureCards from '@/components/FeatureCards';
 
 export default function Home() {
   const { isAuthenticated, loading } = useAuth();
@@ -31,11 +29,9 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-[calc(100vh-3.5rem)] pt-14">
+    <main className="min-h-[calc(100vh-3.5rem)] pt-14 pb-16">
       <HeroSection />
       <ProductExplanation />
-      <HowItWorks />
-      <FeatureCards />
     </main>
   );
 }
