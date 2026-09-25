@@ -45,6 +45,9 @@ export const Navbar = () => {
               <span className="text-[10px] font-medium uppercase tracking-wider px-1.5 py-0.5 rounded bg-[#F4EFE6] text-[#213448] border border-[#E2DBD0] hidden sm:inline-block">
                 AI Workspace
               </span>
+              <span className="text-[11px] text-[#547792] font-medium hidden lg:inline-block ml-1">
+                by Zarak K.
+              </span>
             </div>
           </Link>
 
@@ -271,6 +274,9 @@ export const Navbar = () => {
                   </Link>
                 </>
               )}
+              <div className="pt-2 mt-2 border-t border-[#E2DBD0] text-center text-xs text-[#547792]">
+                A Project by <span className="font-semibold text-[#213448]">Zarak K.</span> • Powered by <span className="font-medium text-[#213448]">Aimmyy AI</span>
+              </div>
             </div>
           </motion.div>
         )}

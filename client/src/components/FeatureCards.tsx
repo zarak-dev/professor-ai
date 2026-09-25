@@ -25,7 +25,7 @@ const features = [
     icon: MessageSquareText,
     title: 'Context-Aware AI Dialogue',
     description:
-      "Interactive conversational tutor powered by Gemini with fallback intelligence, referencing specific sections of your document.",
+      "Interactive conversational tutor powered by Aimmyy AI with resilient multi-tier intelligence, referencing specific sections of your document.",
     tag: 'AI Tutor',
     tagColor: 'mint' as const,
     href: '/documents',

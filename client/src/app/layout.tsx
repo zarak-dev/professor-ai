@@ -16,10 +16,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "The Professor | AI Document Intelligence",
+  title: "The Professor | Aimmyy AI Document Intelligence",
   description:
-    "Transform static PDFs into interactive, conversational learning environments powered by Google Gemini AI.",
-  keywords: ["AI", "PDF", "document analysis", "quiz generation", "learning"],
+    "Transform static PDFs into interactive, conversational learning environments powered by Aimmyy AI. A Project by Zarak K.",
+  keywords: ["AI", "PDF", "document analysis", "quiz generation", "learning", "Aimmyy AI", "Zarak K"],
 };
 
 export const viewport = {

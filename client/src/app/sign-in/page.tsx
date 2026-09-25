@@ -214,6 +214,9 @@ function SignInForm() {
               )}
             </Button>
           </form>
+          <p className="text-center text-xs text-[#547792] mt-5 pt-4 border-t border-[#E2DBD0]">
+            A Project by <span className="font-semibold text-[#213448]">Zarak K.</span> • Powered by <span className="font-medium text-[#213448]">Aimmyy AI</span>
+          </p>
         </div>
       </motion.div>
     </main>

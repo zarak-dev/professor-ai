@@ -40,26 +40,26 @@ export class AIServiceWithFallback implements ChatAIService {
         try {
             return await this.callWithTimeout(
                 () => this.primary.generateContent(prompt),
-                "Primary (Gemini)",
+                "Aimmyy AI (Primary)",
                 this.timeoutMs
             );
         } catch (primaryError: any) {
             console.warn(
-                `[AI FALLBACK] Primary (Gemini) failed (${primaryError.message || "Unknown"}). Falling back to Secondary (Groq)...`
+                `[AI ENGINE] Aimmyy AI Primary failed (${primaryError.message || "Unknown"}). Routing to Aimmyy AI Fallback...`
             );
             try {
                 return await this.callWithTimeout(
                     () => this.fallback.generateContent(prompt),
-                    "Fallback (Groq)",
+                    "Aimmyy AI (Fallback)",
                     this.timeoutMs
                 );
             } catch (fallbackError: any) {
                 const totalElapsed = Date.now() - startTotal;
                 console.error(
-                    `[AI ERROR] Both primary and fallback failed after ${totalElapsed}ms. Error: ${fallbackError.message || "Unknown"}`
+                    `[AI ERROR] Both Aimmyy AI primary and fallback failed after ${totalElapsed}ms. Error: ${fallbackError.message || "Unknown"}`
                 );
                 throw AppError.aiError(
-                    `AI generation failed. Primary: ${primaryError.message || "failed"}, Fallback: ${fallbackError.message || "failed"}`
+                    `Aimmyy AI generation failed. Primary: ${primaryError.message || "failed"}, Fallback: ${fallbackError.message || "failed"}`
                 );
             }
         }
@@ -70,26 +70,26 @@ export class AIServiceWithFallback implements ChatAIService {
         try {
             return await this.callWithTimeout(
                 () => this.primary.generateChatResponse(prompt, history),
-                "Primary (Gemini)",
+                "Aimmyy AI (Primary)",
                 this.timeoutMs
             );
         } catch (primaryError: any) {
             console.warn(
-                `[AI FALLBACK] Primary (Gemini) chat failed (${primaryError.message || "Unknown"}). Falling back to Secondary (Groq)...`
+                `[AI ENGINE] Aimmyy AI Primary chat failed (${primaryError.message || "Unknown"}). Routing to Aimmyy AI Fallback...`
             );
             try {
                 return await this.callWithTimeout(
                     () => this.fallback.generateChatResponse(prompt, history),
-                    "Fallback (Groq)",
+                    "Aimmyy AI (Fallback)",
                     this.timeoutMs
                 );
             } catch (fallbackError: any) {
                 const totalElapsed = Date.now() - startTotal;
                 console.error(
-                    `[AI ERROR] Both primary and fallback failed for chat after ${totalElapsed}ms. Error: ${fallbackError.message || "Unknown"}`
+                    `[AI ERROR] Both Aimmyy AI primary and fallback failed for chat after ${totalElapsed}ms. Error: ${fallbackError.message || "Unknown"}`
                 );
                 throw AppError.aiError(
-                    `AI chat failed. Primary: ${primaryError.message || "failed"}, Fallback: ${fallbackError.message || "failed"}`
+                    `Aimmyy AI chat failed. Primary: ${primaryError.message || "failed"}, Fallback: ${fallbackError.message || "failed"}`
                 );
             }
         }

@@ -12,8 +12,8 @@
 [![Node.js](https://img.shields.io/badge/Node.js-v18%2B-339933?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/)
 [![Next.js](https://img.shields.io/badge/Next.js-15-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Gemini](https://img.shields.io/badge/Google_Gemini-8E75C2?style=for-the-badge&logo=google-gemini&logoColor=white)](https://ai.google.dev/)
-[![Groq](https://img.shields.io/badge/Groq_Fallback-F55036?style=for-the-badge&logo=groq&logoColor=white)](https://groq.com/)
+[![Aimmyy AI](https://img.shields.io/badge/Powered_by-Aimmyy_AI-213448?style=for-the-badge&logoColor=white)](https://github.com/)
+[![Creator](https://img.shields.io/badge/Project_by-Zarak_K.-547792?style=for-the-badge)](https://github.com/)
 
 </div>
 
@@ -21,7 +21,7 @@
 
 ## Overview
 
-**The Professor** is an AI-powered document intelligence platform designed to transform static academic and technical PDFs into interactive, conversational learning workspaces. By leveraging Large Language Models with automated fallback (Google Gemini + Groq), it provides deep document summaries, isolated user workspaces, contextual AI dialogue, interactive quizzes, active recall flashcards, and topic visualizations.
+**The Professor** is an AI-powered document intelligence platform created by **Zarak K.**, designed to transform static academic and technical PDFs into interactive, conversational learning workspaces. Powered by **Aimmyy AI** with automated multi-tier fallback resilience, it provides deep document summaries, isolated user workspaces, contextual AI dialogue, interactive quizzes, active recall flashcards, and topic visualizations.
 
 ---
 
@@ -78,9 +78,9 @@ User (Authenticated via Supabase)
 - **PDF Extraction**: `pdf-parse`
 
 ### AI Services
-- **Primary LLM**: Google Gemini (`@google/generative-ai`)
-- **Fallback LLM**: Groq SDK (`groq-sdk`)
-- **Resilience**: Automatic fallback with provider timeout tracking
+- **Engine**: Powered by Aimmyy AI (`Aimmyy AI Intelligent Engine`)
+- **Architecture**: Automated multi-tier fallback with provider latency and health tracking
+- **Resilience**: High-availability document summarization, dialogue, and assessment
 
 ---
 
