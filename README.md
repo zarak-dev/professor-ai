@@ -6,7 +6,7 @@
 
 <div align="center">
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-blue?style=for-the-badge&logo=vercel)](https://the-professor-breaking-bad.vercel.app/)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-blue?style=for-the-badge&logo=vercel)](https://professor-ai-nu.vercel.app/)
 [![API Status](https://img.shields.io/badge/API-Render-green?style=for-the-badge&logo=render)](https://the-professor.onrender.com)
 
 [![Node.js](https://img.shields.io/badge/Node.js-v18%2B-339933?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/)
@@ -154,7 +154,7 @@ Visitor
    | `GROQ_API_KEY` | Your Aimmyy AI secondary fallback key |
    | `SUPABASE_URL` | `https://xyz.supabase.co` |
    | `SUPABASE_ANON_KEY` | Your Supabase anon public key |
-   | `CLIENT_URL` | Your Vercel frontend URL (e.g. `https://your-app.vercel.app`) |
+   | `CLIENT_URL` | `https://professor-ai-nu.vercel.app` |
 
 ---
 
