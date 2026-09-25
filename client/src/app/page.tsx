@@ -4,6 +4,8 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import HeroSection from '@/components/HeroSection';
+import ProductExplanation from '@/components/ProductExplanation';
+import HowItWorks from '@/components/HowItWorks';
 import FeatureCards from '@/components/FeatureCards';
 
 export default function Home() {
@@ -31,6 +33,8 @@ export default function Home() {
   return (
     <main className="min-h-[calc(100vh-3.5rem)] pt-14">
       <HeroSection />
+      <ProductExplanation />
+      <HowItWorks />
       <FeatureCards />
     </main>
   );

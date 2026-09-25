@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Link from 'next/link';
 import {
   RotateCcw,
   Sparkles,
@@ -447,12 +448,23 @@ export default function FlashcardPanel({ documentId }: FlashcardPanelProps) {
         )}
 
         {flashState === 'error' && (
-          <ErrorState
-            title="Flashcard Generation Error"
-            message={errorMsg}
-            onRetry={generateFlashcards}
-            className="max-w-md mx-auto"
-          />
+          <div className="max-w-md mx-auto">
+            <ErrorState
+              title={errorMsg.toLowerCase().includes('guest') || errorMsg.toLowerCase().includes('limit') ? "Guest Limit Reached" : "Flashcard Generation Error"}
+              message={errorMsg}
+              onRetry={generateFlashcards}
+            />
+            {(errorMsg.toLowerCase().includes('guest') || errorMsg.toLowerCase().includes('limit')) && (
+              <div className="mt-4 text-center">
+                <Link href="/sign-in?claim=true">
+                  <Button variant="primary" size="sm" className="gap-1.5 shadow-xs">
+                    <span>Create Free Account to Continue</span>
+                    <ArrowRight size={14} />
+                  </Button>
+                </Link>
+              </div>
+            )}
+          </div>
         )}
       </AnimatePresence>
     </div>

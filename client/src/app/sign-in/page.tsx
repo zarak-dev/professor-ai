@@ -2,21 +2,24 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import { getErrorMessage } from '@/lib/api';
-import { LogIn, UserPlus, Loader2, AlertCircle, Mail, Lock, User, ArrowRight, GraduationCap } from 'lucide-react';
+import { LogIn, UserPlus, Loader2, AlertCircle, Mail, Lock, User, ArrowRight, GraduationCap, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-export default function SignInPage() {
-  const [mode, setMode] = useState<'login' | 'register'>('login');
+function SignInForm() {
+  const searchParams = useSearchParams();
+  const isClaiming = searchParams.get('claim') === 'true';
+
+  const [mode, setMode] = useState<'login' | 'register'>(isClaiming ? 'register' : 'login');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const { login, register } = useAuth();
+  const { login, register, claimGuestDocument } = useAuth();
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -35,7 +38,14 @@ export default function SignInPage() {
       } else {
         await login(email, password);
       }
-      router.push('/documents');
+
+      // Check if there is a pending guest document to claim
+      const claimedDocId = await claimGuestDocument();
+      if (claimedDocId) {
+        router.push(`/documents/${claimedDocId}`);
+      } else {
+        router.push('/documents');
+      }
     } catch (err: unknown) {
       const msg = getErrorMessage(err, 'Authentication failed. Please verify your credentials.');
       setError(msg);
@@ -67,6 +77,15 @@ export default function SignInPage() {
                 : 'Get started with The Professor AI workspace'}
             </p>
           </div>
+
+          {isClaiming && (
+            <div className="mb-6 p-3 rounded-lg bg-blue-50 border border-blue-200/80 text-xs text-blue-800 flex items-start gap-2.5">
+              <Sparkles size={16} className="text-blue-600 shrink-0 mt-0.5" />
+              <span>
+                <strong>Save Your Work:</strong> Register or sign in below to permanently save your guest document, quizzes, and flashcards to your account.
+              </span>
+            </div>
+          )}
 
           {/* Segmented Mode Selector */}
           <div className="grid grid-cols-2 p-1 rounded-lg bg-slate-100 mb-6">
@@ -198,5 +217,19 @@ export default function SignInPage() {
         </div>
       </motion.div>
     </main>
+  );
+}
+
+export default function SignInPage() {
+  return (
+    <React.Suspense
+      fallback={
+        <div className="min-h-[calc(100vh-3.5rem)] flex items-center justify-center bg-slate-50">
+          <div className="w-7 h-7 rounded-full border-2 border-blue-600 border-t-transparent animate-spin" />
+        </div>
+      }
+    >
+      <SignInForm />
+    </React.Suspense>
   );
 }

@@ -112,10 +112,15 @@ export default function ChatInterface({ documentId }: ChatInterfaceProps) {
       setMessages((prev) => [...prev, aiMsg]);
     } catch (err: unknown) {
       console.error('Chat error:', err);
-      const errorText = getErrorMessage(err, 'Sorry, I could not process your message right now. Please try again.');
+      const rawError = getErrorMessage(err, 'Sorry, I could not process your message right now. Please try again.');
+      const isLimit = rawError.toLowerCase().includes('guest') || rawError.toLowerCase().includes('limit');
+      const text = isLimit
+        ? `**Guest Limit Reached:** ${rawError}\n\n👉 [Create a free account to continue chatting and save your document](/sign-in?claim=true)`
+        : `**Error:** ${rawError}`;
+
       const errMsg: Message = {
         id: (Date.now() + 1).toString(),
-        text: `**Error:** ${errorText}`,
+        text,
         sender: 'ai',
         timestamp: new Date(),
       };
@@ -205,6 +210,11 @@ export default function ChatInterface({ documentId }: ChatInterfaceProps) {
                             <code className="bg-slate-100 text-slate-800 px-1.5 py-0.5 rounded font-mono text-xs border border-slate-200">
                               {children}
                             </code>
+                          ),
+                          a: ({ href, children }) => (
+                            <a href={href} className="text-blue-600 underline font-medium hover:text-blue-700">
+                              {children}
+                            </a>
                           ),
                         }}
                       >

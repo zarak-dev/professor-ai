@@ -25,9 +25,11 @@ import { FlashcardController } from "../controller/flashcardController"
 import { VisualizeController } from "../controller/visualizeController"
 import { AuthController } from "../controller/authController"
 import { DocumentController } from "../controller/documentController"
+import { GuestController } from "../controller/guestController"
 
 import { AuthMiddleware } from "../middleware/AuthMiddleware"
 import { DocumentOwnershipMiddleware } from "../middleware/DocumentOwnershipMiddleware"
+import { GuestMiddleware } from "../middleware/GuestMiddleware"
 
 dotenv.config()
 
@@ -75,6 +77,19 @@ const visualizeController = new VisualizeController(visualizeService)
 const authController = new AuthController(authService)
 const documentController = new DocumentController(documentRepository)
 
+const guestMiddleware = new GuestMiddleware(jwtSecret)
+const guestController = new GuestController(
+    aiService,
+    pdfProcessor,
+    aiParser,
+    jwtSecret,
+    documentRepository,
+    quizRepository,
+    flashcardRepository,
+    visualizationRepository,
+    chatHistoryRepository
+)
+
 const router = Router()
 
 // Authentication Endpoints
@@ -82,12 +97,12 @@ router.post('/auth/register', authController.register)
 router.post('/auth/login', authController.login)
 router.get('/auth/me', authMiddleware.handle, authController.getMe)
 
-// Document Endpoints
+// Authenticated Document Endpoints
 router.get('/documents', authMiddleware.handle, documentController.getUserDocuments)
 router.post('/documents', authMiddleware.handle, upload.single('file'), uploadController.handleUpload)
 router.get('/documents/:id', authMiddleware.handle, ownershipMiddleware.handle, documentController.getDocumentById)
 
-// Document-Scoped Feature Endpoints
+// Authenticated Feature Endpoints
 router.get('/documents/:id/chat', authMiddleware.handle, ownershipMiddleware.handle, chatController.getChatHistory)
 router.post('/documents/:id/chat', authMiddleware.handle, ownershipMiddleware.handle, chatController.handleChat)
 
@@ -99,5 +114,21 @@ router.post('/documents/:id/flashcards', authMiddleware.handle, ownershipMiddlew
 
 router.get('/documents/:id/visualize', authMiddleware.handle, ownershipMiddleware.handle, visualizeController.getVisualization)
 router.post('/documents/:id/visualize', authMiddleware.handle, ownershipMiddleware.handle, visualizeController.handleVisualize)
+
+// Guest Mode Endpoints
+router.post('/guest/session', guestController.createSession)
+router.post('/guest/documents', guestMiddleware.handle, upload.single('file'), guestController.handleUpload)
+router.get('/guest/documents/:id', guestMiddleware.handle, guestController.getDocumentById)
+router.get('/guest/documents/:id/chat', guestMiddleware.handle, guestController.getChatHistory)
+router.post('/guest/documents/:id/chat', guestMiddleware.handle, guestController.handleChat)
+router.get('/guest/documents/:id/quiz', guestMiddleware.handle, guestController.getQuiz)
+router.post('/guest/documents/:id/quiz', guestMiddleware.handle, guestController.handleQuiz)
+router.get('/guest/documents/:id/flashcards', guestMiddleware.handle, guestController.getFlashcards)
+router.post('/guest/documents/:id/flashcards', guestMiddleware.handle, guestController.handleFlashcards)
+router.get('/guest/documents/:id/visualize', guestMiddleware.handle, guestController.getVisualize)
+router.post('/guest/documents/:id/visualize', guestMiddleware.handle, guestController.handleVisualize)
+
+// Guest Document Claim (Safe migration to authenticated account)
+router.post('/guest/claim', authMiddleware.handle, guestController.claimGuestDocument)
 
 export default router

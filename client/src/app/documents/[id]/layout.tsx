@@ -5,12 +5,13 @@ import Link from 'next/link';
 import { ArrowLeft, FileText, Calendar, CheckCircle2 } from 'lucide-react';
 import { WorkspaceProvider, useWorkspace } from '@/context/WorkspaceContext';
 import { WorkspaceNav } from '@/components/layout/workspace-nav';
+import { GuestBanner } from '@/components/layout/GuestBanner';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ErrorState } from '@/components/ui/error-state';
 import { Button } from '@/components/ui/button';
 
 function WorkspaceHeader() {
-  const { document, documentId, loading, error, refreshDocument } = useWorkspace();
+  const { document, documentId, loading, error, isGuest, refreshDocument } = useWorkspace();
 
   if (error) {
     return (
@@ -22,10 +23,10 @@ function WorkspaceHeader() {
             onRetry={refreshDocument}
           />
           <div className="text-center mt-6">
-            <Link href="/documents">
+            <Link href={isGuest ? "/" : "/documents"}>
               <Button variant="outline" size="sm" className="gap-2">
                 <ArrowLeft size={14} />
-                <span>Back to My Documents</span>
+                <span>{isGuest ? "Return Home" : "Back to My Documents"}</span>
               </Button>
             </Link>
           </div>
@@ -36,16 +37,19 @@ function WorkspaceHeader() {
 
   return (
     <>
-      <header className="border-b border-slate-200 bg-white pt-18 pb-4">
+      <div className="pt-14">
+        {isGuest && <GuestBanner documentId={documentId} />}
+      </div>
+      <header className="border-b border-slate-200 bg-white py-4">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           {/* Breadcrumb */}
           <div className="mb-3">
             <Link
-              href="/documents"
+              href={isGuest ? "/" : "/documents"}
               className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-500 hover:text-slate-900 transition-colors group"
             >
               <ArrowLeft size={13} className="group-hover:-translate-x-0.5 transition-transform" />
-              <span>All Documents</span>
+              <span>{isGuest ? "Return Home" : "All Documents"}</span>
             </Link>
           </div>
 

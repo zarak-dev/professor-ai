@@ -11,7 +11,15 @@ import { Button } from "@/components/ui/button";
 export const Navbar = () => {
   const pathName = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { user, isAuthenticated, logout } = useAuth();
+  const { user, isAuthenticated, isGuest, logout, startGuestMode } = useAuth();
+
+  const handleStartGuest = async () => {
+    try {
+      await startGuestMode();
+    } catch {
+      // fallback
+    }
+  };
 
   const authNavItems = [
     { label: "Documents", href: "/documents", icon: FileText },
@@ -40,7 +48,7 @@ export const Navbar = () => {
             </div>
           </Link>
 
-          {/* Desktop Navigation */}
+          {/* Desktop Navigation for Authenticated Users */}
           {isAuthenticated && (
             <nav className="hidden md:flex items-center gap-1" aria-label="Main Navigation">
               {authNavItems.map(({ label, href, icon: Icon }) => {
@@ -60,6 +68,35 @@ export const Navbar = () => {
                   </Link>
                 );
               })}
+            </nav>
+          )}
+
+          {/* Desktop Navigation for Public / Guest Users */}
+          {!isAuthenticated && !isGuest && (
+            <nav className="hidden md:flex items-center gap-4 text-xs font-medium text-slate-600">
+              <Link href="/#how-it-works" className="hover:text-slate-900 transition-colors">
+                How It Works
+              </Link>
+              <Link href="/#features" className="hover:text-slate-900 transition-colors">
+                Features
+              </Link>
+            </nav>
+          )}
+
+          {/* Desktop Navigation for Active Guest */}
+          {isGuest && (
+            <nav className="hidden md:flex items-center gap-3">
+              <Link
+                href="/upload"
+                className={`px-3 py-1.5 rounded-md text-xs sm:text-sm font-medium transition-colors flex items-center gap-1.5 ${
+                  pathName === "/upload"
+                    ? "bg-slate-100 text-blue-600 font-semibold"
+                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                }`}
+              >
+                <Upload size={14} />
+                <span>Upload</span>
+              </Link>
             </nav>
           )}
         </div>
@@ -86,8 +123,25 @@ export const Navbar = () => {
                 <span>Log out</span>
               </Button>
             </div>
+          ) : isGuest ? (
+            <div className="flex items-center gap-2.5">
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-amber-50 text-amber-800 border border-amber-200/80 text-xs font-medium">
+                <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+                Guest Mode
+              </span>
+              <Link href="/sign-in?claim=true">
+                <Button variant="primary" size="sm" className="text-xs gap-1">
+                  <span>Sign In to Save</span>
+                </Button>
+              </Link>
+            </div>
           ) : (
             <div className="flex items-center gap-2">
+              <Link href="/upload" onClick={handleStartGuest}>
+                <Button variant="outline" size="sm" className="text-xs">
+                  Try as Guest
+                </Button>
+              </Link>
               <Link href="/sign-in">
                 <Button variant="ghost" size="sm" className="text-xs">
                   Sign in
@@ -163,6 +217,28 @@ export const Navbar = () => {
                     </button>
                   </div>
                 </>
+              ) : isGuest ? (
+                <>
+                  <div className="pb-2 mb-1 border-b border-slate-100 text-xs text-amber-700 flex items-center gap-2 font-medium">
+                    <span className="w-2 h-2 rounded-full bg-amber-500" />
+                    <span>Guest Mode Active (Temporary)</span>
+                  </div>
+                  <Link
+                    href="/upload"
+                    onClick={() => setMobileOpen(false)}
+                    className="px-3 py-2 rounded-md text-sm font-medium text-slate-700 hover:bg-slate-50 flex items-center gap-2"
+                  >
+                    <Upload size={16} className="text-slate-400" />
+                    <span>Upload Document</span>
+                  </Link>
+                  <Link
+                    href="/sign-in?claim=true"
+                    onClick={() => setMobileOpen(false)}
+                    className="px-3 py-2 rounded-md text-sm font-medium text-blue-600 hover:bg-blue-50 font-semibold"
+                  >
+                    Sign In to Save Work
+                  </Link>
+                </>
               ) : (
                 <>
                   <Link
@@ -173,9 +249,26 @@ export const Navbar = () => {
                     Home
                   </Link>
                   <Link
+                    href="/#how-it-works"
+                    onClick={() => setMobileOpen(false)}
+                    className="px-3 py-2 rounded-md text-sm font-medium text-slate-700 hover:bg-slate-50"
+                  >
+                    How It Works
+                  </Link>
+                  <Link
+                    href="/upload"
+                    onClick={() => {
+                      handleStartGuest();
+                      setMobileOpen(false);
+                    }}
+                    className="px-3 py-2 rounded-md text-sm font-medium text-blue-600 hover:bg-blue-50"
+                  >
+                    Try as Guest
+                  </Link>
+                  <Link
                     href="/sign-in"
                     onClick={() => setMobileOpen(false)}
-                    className="px-3 py-2 rounded-md text-sm font-medium text-blue-600 hover:bg-blue-50"
+                    className="px-3 py-2 rounded-md text-sm font-medium text-slate-700 hover:bg-slate-50"
                   >
                     Sign in / Register
                   </Link>

@@ -29,7 +29,7 @@ export default function PdfUploader() {
   const [error, setError] = useState<string>('');
   const [progress, setProgress] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isGuest, startGuestMode } = useAuth();
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -43,14 +43,31 @@ export default function PdfUploader() {
 
   const validateFile = (f: File): string | null => {
     if (f.type !== 'application/pdf') return 'Only standard PDF documents are supported.';
-    if (f.size > 20 * 1024 * 1024) return 'File size exceeds maximum 20MB limit.';
+    const maxLimit = isAuthenticated ? 20 * 1024 * 1024 : 5 * 1024 * 1024;
+    if (f.size > maxLimit) {
+      return isAuthenticated
+        ? 'File size exceeds maximum 20MB limit.'
+        : 'Guest uploads are limited to 5MB. Create an account for up to 20MB documents.';
+    }
     return null;
   };
 
   const uploadFile = useCallback(async (f: File) => {
-    if (!isAuthenticated) {
-      router.push('/sign-in');
+    const validationError = validateFile(f);
+    if (validationError) {
+      setError(validationError);
+      setState('error');
       return;
+    }
+
+    if (!isAuthenticated && !isGuest) {
+      try {
+        await startGuestMode();
+      } catch (err) {
+        console.error('Failed to initialize guest session:', err);
+        router.push('/sign-in');
+        return;
+      }
     }
 
     setState('uploading');
@@ -85,7 +102,7 @@ export default function PdfUploader() {
       setError(msg);
       setState('error');
     }
-  }, [isAuthenticated, router]);
+  }, [isAuthenticated, isGuest, startGuestMode, router]);
 
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -158,7 +175,9 @@ export default function PdfUploader() {
             </h3>
 
             <p className="text-xs text-slate-500 mb-5 max-w-sm mx-auto">
-              PDF documents up to 20MB. Lecture slides, research papers, study notes, or reports.
+              {isAuthenticated
+                ? 'PDF documents up to 20MB. Lecture slides, research papers, study notes, or reports.'
+                : 'PDF documents up to 5MB (Guest Exploration Mode). Sign in for 20MB files & permanent storage.'}
             </p>
 
             <Button
@@ -280,9 +299,24 @@ export default function PdfUploader() {
             </div>
             <h3 className="text-base font-semibold text-slate-900 mb-1">Upload Failed</h3>
             <p className="text-xs text-slate-600 mb-6 max-w-sm mx-auto leading-relaxed">{error}</p>
-            <Button onClick={reset} variant="primary" size="sm">
-              Try Again
-            </Button>
+            <div className="flex flex-col sm:flex-row gap-2.5 justify-center">
+              {error.toLowerCase().includes('guest') || error.toLowerCase().includes('limit') ? (
+                <>
+                  <Link href="/sign-in">
+                    <Button variant="primary" size="sm" className="w-full sm:w-auto">
+                      Create Free Account
+                    </Button>
+                  </Link>
+                  <Button onClick={reset} variant="outline" size="sm" className="w-full sm:w-auto">
+                    Try Another File
+                  </Button>
+                </>
+              ) : (
+                <Button onClick={reset} variant="primary" size="sm">
+                  Try Again
+                </Button>
+              )}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

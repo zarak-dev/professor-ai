@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Link from 'next/link';
 import {
   Network,
   Eye,
@@ -370,12 +371,23 @@ export default function DocumentVisualizer({ documentId }: DocumentVisualizerPro
         )}
 
         {visState === 'error' && (
-          <ErrorState
-            title="Concept Map Generation Error"
-            message={errorMsg}
-            onRetry={generateVisualization}
-            className="max-w-md mx-auto"
-          />
+          <div className="max-w-md mx-auto">
+            <ErrorState
+              title={errorMsg.toLowerCase().includes('guest') || errorMsg.toLowerCase().includes('limit') ? "Guest Limit Reached" : "Concept Map Generation Error"}
+              message={errorMsg}
+              onRetry={generateVisualization}
+            />
+            {(errorMsg.toLowerCase().includes('guest') || errorMsg.toLowerCase().includes('limit')) && (
+              <div className="mt-4 text-center">
+                <Link href="/sign-in?claim=true">
+                  <Button variant="primary" size="sm" className="gap-1.5 shadow-xs">
+                    <span>Create Free Account to Continue</span>
+                    <ArrowRight size={14} />
+                  </Button>
+                </Link>
+              </div>
+            )}
+          </div>
         )}
       </AnimatePresence>
     </div>

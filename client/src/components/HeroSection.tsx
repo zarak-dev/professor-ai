@@ -56,15 +56,15 @@ export default function HeroSection() {
           variants={item}
           className="flex flex-col sm:flex-row items-center justify-center gap-3 w-full sm:w-auto"
         >
-          <Link href="/sign-in" className="w-full sm:w-auto">
-            <Button size="lg" variant="primary" className="w-full sm:w-auto gap-2">
-              <span>Get Started Free</span>
+          <Link href="/upload" className="w-full sm:w-auto">
+            <Button size="lg" variant="primary" className="w-full sm:w-auto gap-2 shadow-xs">
+              <span>Try as Guest</span>
               <ArrowRight size={16} />
             </Button>
           </Link>
           <Link href="/sign-in" className="w-full sm:w-auto">
             <Button size="lg" variant="outline" className="w-full sm:w-auto">
-              <span>Sign In to Workspace</span>
+              <span>Sign In</span>
             </Button>
           </Link>
         </motion.div>

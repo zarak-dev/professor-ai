@@ -13,9 +13,17 @@ export const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     if (typeof window !== 'undefined') {
-      const token = localStorage.getItem('token');
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+      const authToken = localStorage.getItem('token');
+      const guestToken = localStorage.getItem('guest_token');
+
+      if (authToken) {
+        config.headers.Authorization = `Bearer ${authToken}`;
+      } else if (guestToken) {
+        config.headers.Authorization = `Bearer ${guestToken}`;
+        // Automatically route document calls to guest endpoints when in guest mode
+        if (config.url?.startsWith('/documents')) {
+          config.url = `/guest${config.url}`;
+        }
       }
     }
     return config;
@@ -28,14 +36,20 @@ api.interceptors.response.use(
   (error) => {
     if (typeof window !== 'undefined') {
       if (error.response?.status === 401) {
-        localStorage.removeItem('token');
-        localStorage.removeItem('prof_token');
-        localStorage.removeItem('user');
-        localStorage.removeItem('prof_user');
-        
-        // Only redirect if not already on the sign-in page
-        if (!window.location.pathname.includes('/sign-in')) {
-          window.location.href = '/sign-in';
+        const hasAuthToken = !!localStorage.getItem('token');
+        if (hasAuthToken) {
+          localStorage.removeItem('token');
+          localStorage.removeItem('prof_token');
+          localStorage.removeItem('user');
+          localStorage.removeItem('prof_user');
+          
+          if (!window.location.pathname.includes('/sign-in')) {
+            window.location.href = '/sign-in';
+          }
+        } else {
+          // Guest session expired
+          localStorage.removeItem('guest_token');
+          localStorage.removeItem('guest_document_id');
         }
       }
     }

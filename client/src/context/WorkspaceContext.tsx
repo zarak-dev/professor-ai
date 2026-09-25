@@ -11,6 +11,7 @@ interface WorkspaceContextType {
   documentId: string;
   loading: boolean;
   error: string | null;
+  isGuest: boolean;
   refreshDocument: () => Promise<void>;
 }
 
@@ -23,7 +24,7 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
   const [document, setDocument] = useState<DocumentItem | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { isAuthenticated, loading: authLoading } = useAuth();
+  const { isAuthenticated, isGuest, loading: authLoading } = useAuth();
 
   const fetchDocument = useCallback(async () => {
     if (!documentId) return;
@@ -43,13 +44,13 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (!authLoading) {
-      if (!isAuthenticated) {
+      if (!isAuthenticated && !isGuest) {
         router.push('/sign-in');
       } else if (documentId) {
         fetchDocument();
       }
     }
-  }, [documentId, isAuthenticated, authLoading, router, fetchDocument]);
+  }, [documentId, isAuthenticated, isGuest, authLoading, router, fetchDocument]);
 
   return (
     <WorkspaceContext.Provider
@@ -58,6 +59,7 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
         documentId,
         loading,
         error,
+        isGuest,
         refreshDocument: fetchDocument,
       }}
     >
