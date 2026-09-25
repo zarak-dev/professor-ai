@@ -69,13 +69,15 @@ export class AppServer {
 
     public async start(): Promise<void> {
         try {
-            await this.database.connect();
+            this.database.connect().catch((err: any) => {
+                console.warn(`[WARN] MongoDB connection error: ${err.message}. Configure MONGODB_URI in server/.env if needed.`);
+            });
 
             this.app.listen(this.port, () => {
                 console.log(`[READY] The Professor API is live at http://localhost:${this.port}`);
             });
         } catch (err: any) {
-            console.error('Failed to start server due to database connection issue:', err.message);
+            console.error('Failed to start server:', err.message);
             process.exit(1);
         }
     }

@@ -31,11 +31,15 @@ import { DocumentOwnershipMiddleware } from "../middleware/DocumentOwnershipMidd
 
 dotenv.config()
 
-const geminiKey = process.env.GEMINI_API_KEY?.trim()
-if (!geminiKey) throw new Error("ERROR: GEMINI API KEY is missing in .env file")
+const geminiKey = process.env.GEMINI_API_KEY?.trim() || 'placeholder_gemini_key'
+if (!process.env.GEMINI_API_KEY) {
+    console.warn("[WARN] GEMINI_API_KEY is not set in server/.env. AI calls will require a valid key.")
+}
 
-const groqKey = process.env.GROQ_API_KEY?.trim()
-if (!groqKey) throw new Error("ERROR: GROQ API KEY is missing in .env file")
+const groqKey = process.env.GROQ_API_KEY?.trim() || 'placeholder_groq_key'
+if (!process.env.GROQ_API_KEY) {
+    console.warn("[WARN] GROQ_API_KEY is not set in server/.env. Fallback AI calls will require a valid key.")
+}
 
 const geminiService = new GeminiService(geminiKey)
 const groqService = new GroqService(groqKey)
@@ -52,17 +56,18 @@ const quizRepository = new QuizRepository()
 const flashcardRepository = new FlashcardRepository()
 const visualizationRepository = new VisualizationRepository()
 
-const supabaseUrl = process.env.SUPABASE_URL?.trim()
-if (!supabaseUrl) throw new Error("ERROR: SUPABASE_URL is missing in .env file")
+const supabaseUrl = process.env.SUPABASE_URL?.trim() || 'https://placeholder.supabase.co'
+const supabaseKey = (process.env.SUPABASE_KEY?.trim() || process.env.SUPABASE_ANON_KEY?.trim()) || 'placeholder_supabase_key'
 
-const supabaseKey = process.env.SUPABASE_KEY?.trim()
-if (!supabaseKey) throw new Error("ERROR: SUPABASE_KEY is missing in .env file")
+if (!process.env.SUPABASE_URL || (!process.env.SUPABASE_KEY && !process.env.SUPABASE_ANON_KEY)) {
+    console.warn("[WARN] SUPABASE_URL / SUPABASE_KEY are not set in server/.env. Authentication calls will require valid Supabase credentials.")
+}
 
 const authService = new SupabaseAuthService(supabaseUrl, supabaseKey)
 const authMiddleware = new AuthMiddleware(authService)
 const ownershipMiddleware = new DocumentOwnershipMiddleware(documentRepository)
 
-console.log("Supabase Auth Service integrated successfully.");
+console.log("Supabase Auth Service initialized.");
 
 const quizService = new QuizService(aiService, aiParser, quizRepository)
 const flashcardService = new FlashcardService(aiService, aiParser, flashcardRepository)
