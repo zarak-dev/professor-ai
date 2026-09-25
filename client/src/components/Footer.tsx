@@ -2,28 +2,29 @@ import Link from 'next/link';
 
 export default function Footer() {
   return (
-    <footer className="wrapper py-8">
-      <div className="bento-card-static !p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <p className="text-xs font-bold text-muted-foreground">
-          © {new Date().getFullYear()} The Professor · Original AI Tutor 
+    <footer className="w-full border-t border-slate-200/80 bg-white py-6 mt-auto">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+        <p>
+          © {new Date().getFullYear()} The Professor. All rights reserved.
         </p>
 
-        <div className="flex flex-wrap gap-2">
-          {[
-            { label: 'My Documents', href: '/documents' },
-            { label: 'Upload PDF', href: '/upload' },
-          ].map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="tag tag-purple hover:tag-yellow transition-all hover:-translate-y-0.5"
-            >
-              {link.label}
-            </Link>
-          ))}
-          <span className="tag tag-mint">Next.js</span>
-          <span className="tag tag-peach">Gemini AI</span>
-          <span className="tag tag-blue">MongoDB</span>
+        <div className="flex items-center gap-6">
+          <Link
+            href="/documents"
+            className="hover:text-slate-900 transition-colors"
+          >
+            Documents
+          </Link>
+          <Link
+            href="/upload"
+            className="hover:text-slate-900 transition-colors"
+          >
+            Upload
+          </Link>
+          <span className="text-slate-300">•</span>
+          <span className="text-slate-400">
+            Powered by Gemini AI
+          </span>
         </div>
       </div>
     </footer>

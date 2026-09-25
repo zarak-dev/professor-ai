@@ -42,8 +42,8 @@ export default function PdfUploader() {
   }, []);
 
   const validateFile = (f: File): string | null => {
-    if (f.type !== 'application/pdf') return 'Only PDF files are accepted.';
-    if (f.size > 20 * 1024 * 1024) return 'File must be smaller than 20MB.';
+    if (f.type !== 'application/pdf') return 'Only standard PDF documents are supported.';
+    if (f.size > 20 * 1024 * 1024) return 'File size exceeds maximum 20MB limit.';
     return null;
   };
 
@@ -74,14 +74,14 @@ export default function PdfUploader() {
       setCreatedDocument(doc);
       setState('success');
 
-      // Auto-navigate to the new document workspace after 1 second
+      // Auto-navigate to the new document workspace
       setTimeout(() => {
         router.push(`/documents/${doc._id}`);
       }, 1200);
 
     } catch (err: unknown) {
       console.error('Upload Error:', err);
-      const msg = getErrorMessage(err, 'Upload failed. Please try again.');
+      const msg = getErrorMessage(err, 'Failed to upload document. Please try again.');
       setError(msg);
       setState('error');
     }
@@ -136,69 +136,76 @@ export default function PdfUploader() {
         {(state === 'idle' || state === 'dragging') && (
           <motion.div
             key="dropzone"
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -16 }}
+            exit={{ opacity: 0, y: -12 }}
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
             onClick={() => inputRef.current?.click()}
-            className={`border-3 border-dashed rounded-3xl p-8 sm:p-14 text-center cursor-pointer transition-all duration-200 select-none ${
+            className={`border-2 border-dashed rounded-xl p-8 sm:p-12 text-center cursor-pointer transition-all duration-200 select-none bg-white shadow-xs ${
               state === 'dragging'
-                ? 'border-primary bg-primary/10 scale-[1.01]'
-                : 'border-border bg-card/60 hover:bg-card hover:border-foreground'
+                ? 'border-blue-600 bg-blue-50/50 scale-[1.01]'
+                : 'border-slate-300 hover:border-slate-400 hover:bg-slate-50/60'
             }`}
           >
-            <div className="mx-auto icon-circle !w-16 !h-16 bg-primary/20 mb-6 group-hover:scale-110 transition-transform">
-              <Upload size={28} className="text-foreground" />
+            <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mx-auto mb-4 border border-blue-100">
+              <Upload size={22} />
             </div>
 
-            <h3 className="text-xl sm:text-2xl font-black mb-2">
-              {state === 'dragging' ? 'Drop your PDF here' : 'Drop your PDF here, or browse'}
+            <h3 className="text-base sm:text-lg font-semibold text-slate-900 mb-1">
+              {state === 'dragging' ? 'Drop PDF to upload' : 'Click to upload or drag and drop'}
             </h3>
 
-            <p className="text-sm text-muted-foreground mb-6 max-w-sm mx-auto">
-              Upload textbook chapters, research papers, study notes, or slides (up to 20MB).
+            <p className="text-xs text-slate-500 mb-5 max-w-sm mx-auto">
+              PDF documents up to 20MB. Lecture slides, research papers, study notes, or reports.
             </p>
 
-            <span className="btn-primary pointer-events-none inline-flex items-center gap-2">
-              <FileText size={16} />
-              Choose PDF File
-            </span>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              className="pointer-events-none"
+            >
+              <FileText size={14} className="mr-1.5 text-slate-400" />
+              Select PDF File
+            </Button>
           </motion.div>
         )}
 
         {state === 'uploading' && (
           <motion.div
             key="uploading"
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -16 }}
-            className="bento-card-static !p-8 sm:!p-12 text-center"
+            exit={{ opacity: 0, y: -12 }}
+            className="border border-slate-200 bg-white rounded-xl p-8 sm:p-10 text-center shadow-xs"
           >
-            <div className="mx-auto icon-circle !w-16 !h-16 bg-primary/20 mb-6">
-              <Loader2 size={30} className="animate-spin text-foreground" />
+            <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mx-auto mb-4 border border-blue-100">
+              <Loader2 size={24} className="animate-spin" />
             </div>
 
-            <h3 className="text-xl font-black mb-1">Processing Document</h3>
-            <p className="text-sm text-muted-foreground mb-6 flex items-center justify-center gap-1.5">
-              <FileText size={14} />
-              {file?.name}
+            <h3 className="text-base font-semibold text-slate-900 mb-1">
+              Processing Document
+            </h3>
+            <p className="text-xs text-slate-500 mb-5 flex items-center justify-center gap-1.5">
+              <FileText size={13} className="text-slate-400" />
+              <span className="font-medium text-slate-700">{file?.name}</span>
             </p>
 
-            <div className="w-full bg-muted rounded-full h-3 mb-2 overflow-hidden border border-border">
+            <div className="w-full max-w-md mx-auto bg-slate-100 rounded-full h-2 mb-2 overflow-hidden border border-slate-200/60">
               <motion.div
-                className="bg-primary h-full rounded-full"
+                className="bg-blue-600 h-full rounded-full"
                 initial={{ width: 0 }}
                 animate={{ width: `${progress}%` }}
-                transition={{ ease: 'easeOut' as const }}
+                transition={{ ease: 'easeOut' }}
               />
             </div>
-            <p className="text-xs font-bold text-muted-foreground">{progress}%</p>
+            <p className="text-xs font-semibold text-slate-600 mb-4">{progress}%</p>
 
-            <div className="mt-4 flex items-center justify-center gap-1.5 text-xs text-muted-foreground font-medium">
-              <Sparkles size={13} className="text-primary" />
-              Extracting text and generating smart summary...
+            <div className="flex items-center justify-center gap-1.5 text-xs text-slate-500">
+              <Sparkles size={13} className="text-blue-600" />
+              <span>Extracting text and generating smart executive summary...</span>
             </div>
           </motion.div>
         )}
@@ -206,51 +213,52 @@ export default function PdfUploader() {
         {state === 'success' && createdDocument && (
           <motion.div
             key="success"
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -16 }}
-            className="bento-card-static !p-6 sm:!p-8"
+            exit={{ opacity: 0, y: -12 }}
+            className="border border-slate-200 bg-white rounded-xl p-6 sm:p-8 shadow-xs"
           >
-            <div className="flex items-start justify-between mb-5">
+            <div className="flex items-start justify-between mb-4">
               <div className="flex items-center gap-3">
-                <div className="icon-circle bg-[var(--bg-mint)]">
-                  <CheckCircle size={20} className="text-black" />
+                <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center border border-emerald-200">
+                  <CheckCircle size={20} />
                 </div>
                 <div>
-                  <h3 className="text-lg font-black">Document Ready!</h3>
-                  <p className="text-xs text-muted-foreground flex items-center gap-1.5">
-                    <FileText size={12} />
-                    {createdDocument.file_name}
+                  <h3 className="text-base font-semibold text-slate-900">Document Ready</h3>
+                  <p className="text-xs text-slate-500 flex items-center gap-1.5">
+                    <FileText size={12} className="text-slate-400" />
+                    <span>{createdDocument.file_name}</span>
                   </p>
                 </div>
               </div>
               <button
                 onClick={reset}
-                className="p-2 rounded-xl border-2 border-border bg-card hover:bg-muted transition-all"
+                className="p-1.5 rounded-md text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
                 aria-label="Close"
               >
-                <X size={14} />
+                <X size={15} />
               </button>
             </div>
 
             {createdDocument.summary && (
-              <div className="bento-card-static !bg-muted/40 !p-4 mb-5 border-border/60">
-                <p className="label-text mb-2 flex items-center gap-1.5">
-                  <Sparkles size={11} className="text-primary" /> AI Summary Preview
+              <div className="bg-slate-50 rounded-lg p-4 mb-5 border border-slate-200/80">
+                <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-500 mb-1.5 flex items-center gap-1.5">
+                  <Sparkles size={12} className="text-blue-600" /> AI Executive Summary
                 </p>
-                <p className="text-xs sm:text-sm leading-relaxed whitespace-pre-wrap">
+                <p className="text-xs text-slate-700 leading-relaxed whitespace-pre-wrap line-clamp-4">
                   {createdDocument.summary}
                 </p>
               </div>
             )}
 
-            <div className="flex flex-col sm:flex-row gap-3 items-center justify-between pt-2">
-              <span className="text-xs text-muted-foreground flex items-center gap-1.5">
-                <Loader2 size={12} className="animate-spin" /> Redirecting to workspace...
+            <div className="flex flex-col sm:flex-row gap-3 items-center justify-between pt-2 border-t border-slate-100">
+              <span className="text-xs text-slate-500 flex items-center gap-1.5">
+                <Loader2 size={13} className="animate-spin text-blue-600" />
+                <span>Redirecting to workspace...</span>
               </span>
 
               <Link href={`/documents/${createdDocument._id}`} className="w-full sm:w-auto">
-                <Button variant="primary" className="w-full sm:w-auto text-xs flex items-center gap-2">
+                <Button variant="primary" size="sm" className="w-full sm:w-auto gap-1.5">
                   <span>Open Workspace Now</span>
                   <ArrowRight size={14} />
                 </Button>
@@ -262,17 +270,17 @@ export default function PdfUploader() {
         {state === 'error' && (
           <motion.div
             key="error"
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -16 }}
-            className="bento-card-static !p-8 sm:!p-10 text-center"
+            exit={{ opacity: 0, y: -12 }}
+            className="border border-red-200 bg-white rounded-xl p-8 text-center shadow-xs"
           >
-            <div className="mx-auto icon-circle !w-14 !h-14 bg-[var(--bg-pink)] mb-5">
-              <AlertCircle size={24} className="text-red-700" />
+            <div className="w-12 h-12 rounded-xl bg-red-50 text-red-600 flex items-center justify-center mx-auto mb-4 border border-red-100">
+              <AlertCircle size={24} />
             </div>
-            <h3 className="text-xl font-black mb-2">Upload Failed</h3>
-            <p className="text-sm text-muted-foreground mb-6 max-w-md mx-auto">{error}</p>
-            <Button onClick={reset} variant="primary">
+            <h3 className="text-base font-semibold text-slate-900 mb-1">Upload Failed</h3>
+            <p className="text-xs text-slate-600 mb-6 max-w-sm mx-auto leading-relaxed">{error}</p>
+            <Button onClick={reset} variant="primary" size="sm">
               Try Again
             </Button>
           </motion.div>

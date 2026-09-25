@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
-import { FileText, Inbox, Sparkles, Plus } from 'lucide-react';
+import { FileText, Inbox, Plus } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { api, getErrorMessage } from '@/lib/api';
 import { DocumentItem } from '@/types';
@@ -44,9 +44,9 @@ export default function DocumentsDashboard() {
 
   if (!isAuthenticated && !authLoading) {
     return (
-      <main className="container-page flex items-center justify-center">
+      <main className="min-h-[calc(100vh-3.5rem)] pt-20 pb-16 flex items-center justify-center px-4 bg-slate-50">
         <EmptyState
-          icon={<Inbox size={32} className="text-muted-foreground" />}
+          icon={<Inbox size={26} className="text-slate-500" />}
           title="Sign in to view your documents"
           description="Access your personalized AI tutor, study materials, quizzes, and flashcards."
           actionText="Sign In"
@@ -58,23 +58,35 @@ export default function DocumentsDashboard() {
   }
 
   return (
-    <main className="container-page">
-      <div className="wrapper">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+    <main className="min-h-[calc(100vh-3.5rem)] pt-20 pb-16 bg-slate-50">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        {/* Page Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
           <div>
-            <p className="label-text mb-2 text-primary flex items-center gap-1.5">
-              <Sparkles size={14} /> Document Library
+            <div className="flex items-center gap-2 mb-1">
+              <h1 className="text-2xl font-semibold tracking-tight text-slate-900">
+                Documents
+              </h1>
+              {!loading && (
+                <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-slate-200/80 text-slate-700">
+                  {documents.length}
+                </span>
+              )}
+            </div>
+            <p className="text-xs sm:text-sm text-slate-500">
+              Manage, review, and study your uploaded PDF documents.
             </p>
-            <h1 className="page-title">My Documents</h1>
           </div>
+
           <Link href="/upload">
-            <Button variant="primary" className="!text-sm flex items-center gap-2">
-              <Plus size={16} />
+            <Button variant="primary" size="md" className="gap-1.5 shadow-xs">
+              <Plus size={15} />
               <span>Upload Document</span>
             </Button>
           </Link>
         </div>
 
+        {/* Content Area */}
         {error ? (
           <ErrorState
             title="Could not load documents"
@@ -83,39 +95,42 @@ export default function DocumentsDashboard() {
             className="max-w-md mx-auto my-12"
           />
         ) : loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div key={i} className="bento-card-static !p-6 flex flex-col h-60 justify-between">
+              <div
+                key={i}
+                className="border border-slate-200 bg-white rounded-xl p-5 flex flex-col h-52 justify-between shadow-xs"
+              >
                 <div>
-                  <div className="flex justify-between items-center mb-4">
-                    <Skeleton className="w-10 h-10 rounded-full" />
-                    <Skeleton className="w-24 h-5 rounded-full" />
+                  <div className="flex justify-between items-center mb-3">
+                    <Skeleton className="w-9 h-9 rounded-lg" />
+                    <Skeleton className="w-20 h-4 rounded-md" />
                   </div>
-                  <Skeleton className="w-3/4 h-6 rounded-md mb-3" />
-                  <Skeleton className="w-full h-4 rounded-md mb-2" />
-                  <Skeleton className="w-2/3 h-4 rounded-md" />
+                  <Skeleton className="w-3/4 h-5 rounded-md mb-2.5" />
+                  <Skeleton className="w-full h-3.5 rounded-md mb-1.5" />
+                  <Skeleton className="w-2/3 h-3.5 rounded-md" />
                 </div>
-                <div className="pt-4 border-t border-border/20 flex justify-between items-center">
-                  <Skeleton className="w-20 h-4 rounded-full" />
-                  <Skeleton className="w-14 h-4 rounded-full" />
+                <div className="pt-3 border-t border-slate-100 flex justify-between items-center">
+                  <Skeleton className="w-16 h-4 rounded-md" />
+                  <Skeleton className="w-14 h-4 rounded-md" />
                 </div>
               </div>
             ))}
           </div>
         ) : documents.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {documents.map((doc) => (
               <DocumentCard key={doc._id} document={doc} />
             ))}
           </div>
         ) : (
           <EmptyState
-            icon={<FileText size={32} className="text-muted-foreground" />}
-            title="No Documents Uploaded Yet"
-            description="Upload your lecture notes, textbook chapters, or study guides to unlock interactive AI tutoring."
+            icon={<FileText size={26} className="text-slate-500" />}
+            title="No documents uploaded yet"
+            description="Upload research papers, lecture notes, or textbooks to unlock conversational AI tutoring and automated quizzes."
             actionText="Upload Your First Document"
             actionHref="/upload"
-            className="max-w-xl mx-auto my-8 !py-16"
+            className="max-w-lg mx-auto my-8 py-16 bg-white"
           />
         )}
       </div>

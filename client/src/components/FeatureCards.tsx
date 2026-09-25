@@ -9,113 +9,106 @@ import {
   ShieldCheck,
   ArrowUpRight,
 } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
 
 const features = [
   {
     icon: FileText,
-    title: 'Neural PDF Extraction',
+    title: 'High-Fidelity PDF Processing',
     description:
-      'High-fidelity text extraction from complex multi-page documents using specialized backend parsing.',
+      'Extract text, headers, and key semantic sections from multi-page PDFs using resilient backend parsing pipeline.',
     tag: 'Extraction',
-    tagColor: 'tag-peach',
-    bg: 'bg-[var(--bg-peach)]',
+    tagColor: 'blue' as const,
     href: '/upload',
   },
   {
     icon: MessageSquareText,
-    title: 'Contextual AI Chat',
+    title: 'Context-Aware AI Dialogue',
     description:
-      "Real-time dialogue powered by Gemini AI with Groq fallback, grounded specifically in your document's context.",
-    tag: 'AI Chat',
-    tagColor: 'tag-blue',
-    bg: 'bg-[var(--bg-blue)]',
+      "Interactive conversational tutor powered by Gemini with fallback intelligence, referencing specific sections of your document.",
+    tag: 'AI Tutor',
+    tagColor: 'mint' as const,
     href: '/documents',
   },
   {
     icon: BrainCircuit,
-    title: 'Auto Quiz Generation',
+    title: 'Adaptive Assessment & Flashcards',
     description:
-      'Intelligent analysis of document segments to generate interactive MCQs and flip-card decks.',
-    tag: 'Quiz',
-    tagColor: 'tag-mint',
-    bg: 'bg-[var(--bg-mint)]',
+      'Automated multiple-choice questions and spaced-repetition flashcards generated on-demand to test mastery.',
+    tag: 'Evaluation',
+    tagColor: 'purple' as const,
     href: '/documents',
   },
   {
     icon: ShieldCheck,
-    title: 'Secure Authentication',
+    title: 'Private & Secure Storage',
     description:
-      'Document-level ownership and role-isolated persistence ensuring private study materials.',
+      'User-isolated documents and role-protected sessions ensuring research and proprietary study materials remain strictly private.',
     tag: 'Security',
-    tagColor: 'tag-purple',
-    bg: 'bg-[var(--bg-purple)]',
+    tagColor: 'slate' as const,
     href: '/documents',
   },
 ];
 
 const container = {
   hidden: {},
-  visible: { transition: { staggerChildren: 0.1 } },
+  visible: { transition: { staggerChildren: 0.08 } },
 };
 
 const item = {
-  hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.45 } },
+  hidden: { opacity: 0, y: 16 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
 };
 
 export default function FeatureCards() {
   return (
-    <section className="wrapper py-8">
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-60px' }}
-        transition={{ duration: 0.4 }}
-        className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-6"
-      >
+    <section className="max-w-6xl mx-auto px-4 sm:px-6 py-12 border-t border-slate-200/80">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
         <div>
-          <p className="label-text mb-2">✦ Capabilities</p>
-          <h2 className="section-title">What The Professor does</h2>
+          <p className="text-xs font-semibold uppercase tracking-wider text-blue-600 mb-1">
+            Capabilities
+          </p>
+          <h2 className="text-xl sm:text-2xl font-semibold tracking-tight text-slate-900">
+            A complete intelligence suite for your documents
+          </h2>
         </div>
-        <p className="text-sm text-muted-foreground max-w-sm">
-          A complete AI toolkit for transforming how you interact with academic
-          and technical documents.
+        <p className="text-xs sm:text-sm text-slate-500 max-w-sm">
+          Built for students, researchers, and technical professionals working with complex texts.
         </p>
-      </motion.div>
+      </div>
 
       <motion.div
         variants={container}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: '-40px' }}
-        className="grid grid-cols-1 sm:grid-cols-2 gap-3"
+        className="grid grid-cols-1 sm:grid-cols-2 gap-4"
       >
         {features.map((feature) => {
           const Icon = feature.icon;
           return (
-            <motion.div
-              key={feature.title}
-              variants={item}
-            >
-              <Link href={feature.href} className="block bento-card group h-full">
-          
+            <motion.div key={feature.title} variants={item}>
+              <Link
+                href={feature.href}
+                className="group block p-6 rounded-xl border border-slate-200/90 bg-white shadow-xs hover:border-slate-300 hover:shadow-sm transition-all h-full"
+              >
                 <div className="flex items-center justify-between mb-4">
-                  <div className={`icon-circle ${feature.bg}`}>
+                  <div className="w-9 h-9 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center border border-slate-200/60 group-hover:bg-blue-50 group-hover:text-blue-600 transition-colors">
                     <Icon size={18} />
                   </div>
-                  <span className={`tag ${feature.tagColor}`}>
+                  <Badge color={feature.tagColor}>
                     {feature.tag}
-                  </span>
+                  </Badge>
                 </div>
 
-                <h3 className="text-lg font-black mb-2 flex items-center gap-2">
-                  {feature.title}
+                <h3 className="text-base font-semibold text-slate-900 mb-2 flex items-center justify-between">
+                  <span>{feature.title}</span>
                   <ArrowUpRight
                     size={16}
-                    className="opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all"
+                    className="text-slate-400 group-hover:text-blue-600 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all"
                   />
                 </h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">
+                <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
                   {feature.description}
                 </p>
               </Link>

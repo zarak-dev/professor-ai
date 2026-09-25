@@ -5,7 +5,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import { getErrorMessage } from '@/lib/api';
-import { LogIn, UserPlus, Loader2, AlertCircle, Mail, Lock, User, ArrowRight } from 'lucide-react';
+import { LogIn, UserPlus, Loader2, AlertCircle, Mail, Lock, User, ArrowRight, GraduationCap } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 export default function SignInPage() {
   const [mode, setMode] = useState<'login' | 'register'>('login');
@@ -34,9 +35,9 @@ export default function SignInPage() {
       } else {
         await login(email, password);
       }
-      router.push('/');
+      router.push('/documents');
     } catch (err: unknown) {
-      const msg = getErrorMessage(err, 'Something went wrong. Please try again.');
+      const msg = getErrorMessage(err, 'Authentication failed. Please verify your credentials.');
       setError(msg);
     } finally {
       setLoading(false);
@@ -44,70 +45,77 @@ export default function SignInPage() {
   };
 
   return (
-    <main className="min-h-screen flex items-center justify-center px-4 pt-24 pb-10">
+    <main className="min-h-[calc(100vh-3.5rem)] flex items-center justify-center px-4 pt-16 pb-12 bg-slate-50">
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
         className="w-full max-w-md"
       >
-        <div className="bento-card-static !p-8">
-          <div className="text-center mb-8">
-            <div className="mx-auto icon-circle !w-16 !h-16 bg-primary/20 mb-4">
-              {mode === 'login' ? <LogIn size={24} /> : <UserPlus size={24} />}
+        <div className="border border-slate-200 bg-white shadow-sm rounded-xl p-6 sm:p-8">
+          {/* Header */}
+          <div className="text-center mb-6">
+            <div className="w-10 h-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center mx-auto mb-3 border border-blue-100">
+              <GraduationCap size={20} />
             </div>
-            <h1 className="text-2xl font-black mb-1">
-              {mode === 'login' ? 'Welcome Back' : 'Create Account'}
+            <h1 className="text-xl sm:text-2xl font-semibold tracking-tight text-slate-900 mb-1">
+              {mode === 'login' ? 'Welcome back' : 'Create an account'}
             </h1>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-xs sm:text-sm text-slate-500">
               {mode === 'login'
-                ? 'Sign in to access your documents'
-                : 'Join The Professor to start learning'}
+                ? 'Sign in to access your document workspace'
+                : 'Get started with The Professor AI workspace'}
             </p>
           </div>
 
-          <div className="flex gap-2 mb-6">
+          {/* Segmented Mode Selector */}
+          <div className="grid grid-cols-2 p-1 rounded-lg bg-slate-100 mb-6">
             <button
               type="button"
               onClick={() => { setMode('login'); setError(''); }}
-              className={`flex-1 py-2.5 rounded-xl text-sm font-bold border-2 border-foreground transition-all ${
+              className={`py-2 text-xs sm:text-sm font-medium rounded-md transition-all flex items-center justify-center gap-1.5 ${
                 mode === 'login'
-                  ? 'bg-primary shadow-[2px_2px_0px_0px_var(--foreground)]'
-                  : 'bg-card hover:bg-primary/20'
+                  ? 'bg-white text-slate-900 shadow-xs font-semibold'
+                  : 'text-slate-600 hover:text-slate-900'
               }`}
             >
-              Sign In
+              <LogIn size={14} />
+              <span>Sign In</span>
             </button>
             <button
               type="button"
               onClick={() => { setMode('register'); setError(''); }}
-              className={`flex-1 py-2.5 rounded-xl text-sm font-bold border-2 border-foreground transition-all ${
+              className={`py-2 text-xs sm:text-sm font-medium rounded-md transition-all flex items-center justify-center gap-1.5 ${
                 mode === 'register'
-                  ? 'bg-primary shadow-[2px_2px_0px_0px_var(--foreground)]'
-                  : 'bg-card hover:bg-primary/20'
+                  ? 'bg-white text-slate-900 shadow-xs font-semibold'
+                  : 'text-slate-600 hover:text-slate-900'
               }`}
             >
-              Register
+              <UserPlus size={14} />
+              <span>Register</span>
             </button>
           </div>
 
+          {/* Error / Feedback Message */}
           <AnimatePresence>
             {error && (
               <motion.div
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
-                className={`mb-4 p-3 rounded-xl border-2 border-foreground flex items-center gap-2 text-sm font-bold ${
-                  error.includes('successful') 
-                    ? 'bg-primary' 
-                    : 'bg-[var(--bg-pink)]'
+                className={`mb-4 p-3 rounded-lg border text-xs font-medium flex items-center gap-2 ${
+                  error.includes('successful')
+                    ? 'bg-emerald-50 border-emerald-200 text-emerald-800'
+                    : 'bg-red-50 border-red-200 text-red-700'
                 }`}
               >
-                <AlertCircle size={16} />
-                {error}
+                <AlertCircle size={15} className="shrink-0" />
+                <span>{error}</span>
               </motion.div>
             )}
           </AnimatePresence>
 
+          {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
             <AnimatePresence>
               {mode === 'register' && (
@@ -116,15 +124,15 @@ export default function SignInPage() {
                   animate={{ opacity: 1, height: 'auto' }}
                   exit={{ opacity: 0, height: 0 }}
                 >
-                  <label className="label-text mb-1.5 flex items-center gap-1.5">
-                    <User size={12} /> Name
+                  <label className="text-xs font-medium text-slate-700 mb-1.5 flex items-center gap-1.5">
+                    <User size={13} className="text-slate-400" /> Full Name
                   </label>
                   <input
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl border-2 border-foreground bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all"
-                    placeholder="Your name"
+                    className="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 bg-white text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all"
+                    placeholder="Jane Doe"
                     required={mode === 'register'}
                     id="auth-name-input"
                     autoComplete="name"
@@ -134,15 +142,15 @@ export default function SignInPage() {
             </AnimatePresence>
 
             <div>
-              <label className="label-text mb-1.5 flex items-center gap-1.5">
-                <Mail size={12} /> Email
+              <label className="text-xs font-medium text-slate-700 mb-1.5 flex items-center gap-1.5">
+                <Mail size={13} className="text-slate-400" /> Email address
               </label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl border-2 border-foreground bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all"
-                placeholder="you@example.com"
+                className="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 bg-white text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all"
+                placeholder="name@example.com"
                 required
                 id="auth-email-input"
                 autoComplete="email"
@@ -150,15 +158,15 @@ export default function SignInPage() {
             </div>
 
             <div>
-              <label className="label-text mb-1.5 flex items-center gap-1.5">
-                <Lock size={12} /> Password
+              <label className="text-xs font-medium text-slate-700 mb-1.5 flex items-center gap-1.5">
+                <Lock size={13} className="text-slate-400" /> Password
               </label>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl border-2 border-foreground bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all"
-                placeholder={mode === 'register' ? 'Min 6 characters' : '••••••••'}
+                className="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 bg-white text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all"
+                placeholder={mode === 'register' ? 'Minimum 6 characters' : '••••••••'}
                 required
                 minLength={mode === 'register' ? 6 : undefined}
                 id="auth-password-input"
@@ -166,24 +174,26 @@ export default function SignInPage() {
               />
             </div>
 
-            <button
+            <Button
               type="submit"
               disabled={loading}
-              className="btn-primary w-full justify-center !py-3.5 disabled:opacity-50 disabled:cursor-not-allowed"
+              variant="primary"
+              size="lg"
+              className="w-full justify-center mt-2"
               id="auth-submit-btn"
             >
               {loading ? (
                 <>
                   <Loader2 size={16} className="animate-spin" />
-                  {mode === 'login' ? 'Signing in...' : 'Creating account...'}
+                  <span>{mode === 'login' ? 'Signing in...' : 'Creating account...'}</span>
                 </>
               ) : (
                 <>
-                  {mode === 'login' ? 'Sign In' : 'Create Account'}
-                  <ArrowRight size={16} />
+                  <span>{mode === 'login' ? 'Sign In' : 'Create Account'}</span>
+                  <ArrowRight size={15} />
                 </>
               )}
-            </button>
+            </Button>
           </form>
         </div>
       </motion.div>

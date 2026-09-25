@@ -2,7 +2,8 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { ArrowRight, Sparkles, MessageSquare, BrainCircuit, FileText } from 'lucide-react';
+import { ArrowRight, Sparkles, MessageSquare, BrainCircuit, FileText, Network } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 const container = {
   hidden: {},
@@ -10,102 +11,111 @@ const container = {
 };
 
 const item = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+  hidden: { opacity: 0, y: 16 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
 };
 
 export default function HeroSection() {
   return (
-    <section className="wrapper pt-28 pb-6">
+    <section className="max-w-6xl mx-auto px-4 sm:px-6 pt-16 sm:pt-20 pb-12">
       <motion.div
         variants={container}
         initial="hidden"
         animate="visible"
+        className="flex flex-col items-center text-center max-w-3xl mx-auto mb-16"
       >
-        <motion.div variants={item} className="bento-card-static !p-5 sm:!p-8 md:!p-12 mb-6">
-          <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start">
-            <div className="flex-1 min-w-0">
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 mb-5">
-                <span className="tag tag-yellow">
-                  <Sparkles size={12} />
-                  AI-Powered
-                </span>
-                <span className="tag tag-mint">Document Intelligence</span>
-              </div>
-
-              <h1 className="page-title mb-6">
-                Turn your PDFs into
-                <br />
-                <span className="relative inline-block">
-                  interactive knowledge
-                  <svg className="absolute -bottom-1 left-0 w-full" height="8" viewBox="0 0 300 8" fill="none">
-                    <path d="M1 5.5C60 2 120 2 150 4C180 6 240 3 299 5.5" stroke="var(--bg-yellow)" strokeWidth="3" strokeLinecap="round"/>
-                  </svg>
-                </span>
-                <span className="animate-blink text-primary ml-1">|</span>
-              </h1>
-
-              <p className="text-base sm:text-lg text-muted-foreground max-w-xl leading-relaxed mb-8">
-                Upload any PDF, chat with AI about its contents, and generate
-                quizzes for self-assessment. The Professor transforms static
-                documents into dynamic learning experiences.
-              </p>
-
-              <div className="flex flex-col sm:flex-row flex-wrap gap-3">
-                <Link href="/sign-in" className="btn-primary text-base px-6 py-3 w-full sm:w-auto justify-center">
-                  <span>Get Started Free</span>
-                  <ArrowRight size={16} />
-                </Link>
-                <Link href="/sign-in" className="btn-secondary text-base px-6 py-3 w-full sm:w-auto justify-center">
-                  <span>Sign In to Documents</span>
-                </Link>
-              </div>
-            </div>
-
-            <div className="w-full lg:w-72 flex flex-col sm:flex-row lg:flex-col gap-3 shrink-0">
-              <div className="flex-1 bg-primary/20 border-2 border-foreground rounded-2xl p-4 text-center">
-                <div className="text-3xl mb-2">🔥</div>
-                <p className="text-sm font-bold">Powered by</p>
-                <p className="text-xs text-muted-foreground">
-                  Google Gemini
-                </p>
-              </div>
-              <div className="flex-1 bg-secondary/30 border-2 border-foreground rounded-2xl p-4 text-center">
-                <div className="text-3xl mb-2">⚡</div>
-                <p className="text-sm font-bold">Architecture</p>
-                <p className="text-xs text-muted-foreground">
-                  MVC + OOP Design
-                </p>
-              </div>
-            </div>
-          </div>
+        {/* Pill Badge */}
+        <motion.div variants={item} className="mb-6">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200/80">
+            <Sparkles size={12} className="text-blue-600" />
+            AI Document Intelligence
+          </span>
         </motion.div>
 
-        <motion.div
-          variants={container}
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3"
+        {/* Hero Title */}
+        <motion.h1
+          variants={item}
+          className="text-3xl sm:text-5xl md:text-6xl font-semibold tracking-tight text-slate-900 leading-[1.15] mb-6"
         >
-          {[
-            { icon: FileText, label: 'Neural Extraction', value: 'PDF', bg: 'bg-[var(--bg-peach)]' },
-            { icon: MessageSquare, label: 'Contextual AI', value: 'Chat', bg: 'bg-[var(--bg-blue)]' },
-            { icon: BrainCircuit, label: 'Auto-Generated', value: 'MCQ', bg: 'bg-[var(--bg-mint)]' },
-            { icon: Sparkles, label: 'Verified Auth', value: 'Security', bg: 'bg-[var(--bg-purple)]' },
-          ].map((stat) => (
-            <motion.div
-              key={stat.label}
-              variants={item}
-              className="bento-card flex flex-col gap-3 cursor-default"
-            >
-              <div className={`icon-circle ${stat.bg}`}>
-                <stat.icon size={18} />
-              </div>
-              <div>
-                <p className="label-text mb-0.5">{stat.label}</p>
-                <p className="text-2xl font-black">{stat.value}</p>
-              </div>
-            </motion.div>
-          ))}
+          Transform complex documents into{' '}
+          <span className="text-blue-600">actionable knowledge</span>
+        </motion.h1>
+
+        {/* Subtitle */}
+        <motion.p
+          variants={item}
+          className="text-base sm:text-lg text-slate-600 max-w-2xl leading-relaxed mb-8"
+        >
+          Upload research papers, lecture notes, and technical textbooks.
+          Interact via grounded conversational AI, test retention with auto-generated
+          quizzes, and master concepts with structured flashcards.
+        </motion.p>
+
+        {/* CTA Buttons */}
+        <motion.div
+          variants={item}
+          className="flex flex-col sm:flex-row items-center justify-center gap-3 w-full sm:w-auto"
+        >
+          <Link href="/sign-in" className="w-full sm:w-auto">
+            <Button size="lg" variant="primary" className="w-full sm:w-auto gap-2">
+              <span>Get Started Free</span>
+              <ArrowRight size={16} />
+            </Button>
+          </Link>
+          <Link href="/sign-in" className="w-full sm:w-auto">
+            <Button size="lg" variant="outline" className="w-full sm:w-auto">
+              <span>Sign In to Workspace</span>
+            </Button>
+          </Link>
         </motion.div>
+      </motion.div>
+
+      {/* Feature Value Grid */}
+      <motion.div
+        variants={container}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: '-40px' }}
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
+      >
+        {[
+          {
+            icon: FileText,
+            title: 'Neural Extraction',
+            description: 'Extracts formatted text and key entities from multi-page PDFs with zero data leakage.',
+          },
+          {
+            icon: MessageSquare,
+            title: 'Document-Grounded Chat',
+            description: 'Answers strictly grounded in your document context to eliminate AI hallucinations.',
+          },
+          {
+            icon: BrainCircuit,
+            title: 'Assessment Engine',
+            description: 'Generates targeted multiple-choice questions with conceptual answer explanations.',
+          },
+          {
+            icon: Network,
+            title: 'Knowledge Mapping',
+            description: 'Maps relationships between key themes and topics for visual comprehension.',
+          },
+        ].map((feature) => (
+          <motion.div
+            key={feature.title}
+            variants={item}
+            className="p-5 rounded-xl border border-slate-200/90 bg-white shadow-xs hover:border-slate-300 hover:shadow-sm transition-all"
+          >
+            <div className="w-9 h-9 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center mb-3.5 border border-blue-100">
+              <feature.icon size={18} />
+            </div>
+            <h3 className="text-sm font-semibold text-slate-900 mb-1">
+              {feature.title}
+            </h3>
+            <p className="text-xs text-slate-500 leading-relaxed">
+              {feature.description}
+            </p>
+          </motion.div>
+        ))}
       </motion.div>
     </section>
   );

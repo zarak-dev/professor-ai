@@ -12,7 +12,11 @@ export const Card: React.FC<CardProps> = ({
 }) => {
   return (
     <div
-      className={`${interactive ? 'bento-card cursor-pointer' : 'bento-card-static'} ${className}`}
+      className={`rounded-xl border border-slate-200 bg-white text-slate-900 shadow-xs transition-all duration-200 ${
+        interactive
+          ? 'hover:border-slate-300 hover:shadow-md cursor-pointer'
+          : ''
+      } ${className}`}
       {...props}
     >
       {children}

@@ -23,21 +23,21 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
   className = '',
 }) => {
   return (
-    <Card className={`text-center py-12 px-6 flex flex-col items-center justify-center ${className}`}>
+    <Card className={`text-center py-12 px-6 flex flex-col items-center justify-center border-dashed border-slate-300 ${className}`}>
       {icon && (
-        <div className="icon-circle !w-16 !h-16 mx-auto mb-4 bg-muted">
+        <div className="w-12 h-12 rounded-xl bg-slate-100 text-slate-600 flex items-center justify-center mx-auto mb-4 border border-slate-200/60">
           {icon}
         </div>
       )}
-      <h3 className="text-xl font-black mb-2">{title}</h3>
-      <p className="text-muted-foreground text-sm max-w-md mb-6">{description}</p>
+      <h3 className="text-base sm:text-lg font-semibold text-slate-900 mb-1.5">{title}</h3>
+      <p className="text-slate-500 text-sm max-w-sm mb-6 leading-relaxed">{description}</p>
       {actionText && (
         actionHref ? (
           <Link href={actionHref}>
-            <Button variant="primary">{actionText}</Button>
+            <Button variant="primary" size="md">{actionText}</Button>
           </Link>
         ) : (
-          <Button variant="primary" onClick={onAction}>{actionText}</Button>
+          <Button variant="primary" size="md" onClick={onAction}>{actionText}</Button>
         )
       )}
     </Card>

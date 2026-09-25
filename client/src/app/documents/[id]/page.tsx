@@ -9,7 +9,6 @@ import {
   Network,
   Sparkles,
   ArrowRight,
-  FileCheck,
   CheckCircle2,
   Clock,
 } from 'lucide-react';
@@ -24,25 +23,25 @@ export default function DocumentOverviewPage() {
   const quickActions = [
     {
       title: 'Chat with Document',
-      description: 'Ask questions, clarify complex concepts, or request deep explanations.',
+      description: 'Ask questions, clarify difficult concepts, or request deep contextual explanations.',
       href: `/documents/${documentId}/chat`,
       icon: MessageSquareText,
-      color: 'mint' as const,
-      hasData: false,
+      color: 'blue' as const,
+      hasData: true,
       badgeText: 'Interactive Tutor',
     },
     {
       title: 'Practice Quiz',
-      description: 'Test your understanding with 5 multiple-choice questions.',
+      description: 'Test your retention and understanding with 5 automated multiple-choice questions.',
       href: `/documents/${documentId}/quiz`,
       icon: BrainCircuit,
-      color: 'pink' as const,
+      color: 'mint' as const,
       hasData: document?.hasQuiz,
       badgeText: document?.hasQuiz ? 'Quiz Ready' : 'Generate on Demand',
     },
     {
       title: 'Study Flashcards',
-      description: 'Review key terms, definitions, and concepts with 3D flip cards.',
+      description: 'Review key terms, definitions, and concepts with active-recall flip cards.',
       href: `/documents/${documentId}/flashcards`,
       icon: Layers,
       color: 'purple' as const,
@@ -51,10 +50,10 @@ export default function DocumentOverviewPage() {
     },
     {
       title: 'Concept Visualization',
-      description: 'Explore topics, relationships, and conceptual connections in your document.',
+      description: 'Explore topics, relationships, and conceptual connections across the document.',
       href: `/documents/${documentId}/visualize`,
       icon: Network,
-      color: 'blue' as const,
+      color: 'peach' as const,
       hasData: document?.hasVisualization,
       badgeText: document?.hasVisualization ? 'Map Ready' : 'Generate on Demand',
     },
@@ -63,22 +62,22 @@ export default function DocumentOverviewPage() {
   if (loading) {
     return (
       <main className="py-8">
-        <div className="wrapper max-w-5xl">
-          <div className="bento-card-static !p-8 mb-8">
-            <Skeleton className="w-40 h-6 mb-4" />
+        <div className="max-w-5xl mx-auto px-4 sm:px-6">
+          <div className="border border-slate-200 bg-white rounded-xl p-6 sm:p-7 mb-8 shadow-xs">
+            <Skeleton className="w-40 h-5 mb-4" />
             <Skeleton className="w-full h-4 mb-2" />
             <Skeleton className="w-5/6 h-4 mb-2" />
             <Skeleton className="w-4/6 h-4" />
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="bento-card-static !p-6 h-48 flex flex-col justify-between">
+              <div key={i} className="border border-slate-200 bg-white rounded-xl p-5 h-44 flex flex-col justify-between shadow-xs">
                 <div>
-                  <Skeleton className="w-12 h-12 rounded-full mb-3" />
+                  <Skeleton className="w-9 h-9 rounded-lg mb-3" />
                   <Skeleton className="w-3/4 h-5 mb-2" />
-                  <Skeleton className="w-full h-4" />
+                  <Skeleton className="w-full h-3.5" />
                 </div>
-                <Skeleton className="w-24 h-4" />
+                <Skeleton className="w-20 h-4" />
               </div>
             ))}
           </div>
@@ -89,40 +88,45 @@ export default function DocumentOverviewPage() {
 
   return (
     <main className="py-8">
-      <div className="wrapper max-w-5xl">
-        {/* Document Summary Card */}
-        <div className="bento-card-static !p-6 sm:!p-8 mb-8">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6">
+        {/* Document Executive Summary Card */}
+        <div className="border border-slate-200 bg-white rounded-xl p-6 sm:p-7 mb-8 shadow-xs">
           <div className="flex items-center justify-between gap-4 mb-4">
-            <div className="flex items-center gap-2">
-              <div className="icon-circle bg-primary/20 !w-8 !h-8">
-                <Sparkles size={16} className="text-foreground" />
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100">
+                <Sparkles size={16} />
               </div>
-              <h2 className="text-lg font-black tracking-tight">AI Executive Summary</h2>
+              <h2 className="text-base font-semibold text-slate-900 tracking-tight">
+                AI Executive Summary
+              </h2>
             </div>
-            <Badge color="yellow" className="hidden sm:inline-flex">
-              <FileCheck size={12} /> Ready for Study
+            <Badge color="mint" className="hidden sm:inline-flex">
+              <CheckCircle2 size={11} className="text-emerald-600" />
+              <span>Ready for Study</span>
             </Badge>
           </div>
 
           {document?.summary ? (
-            <div className="text-sm sm:text-base leading-relaxed text-foreground/90 whitespace-pre-wrap pl-2 border-l-2 border-primary">
+            <div className="text-sm leading-relaxed text-slate-700 whitespace-pre-wrap pl-3.5 border-l-2 border-blue-600">
               {document.summary}
             </div>
           ) : (
-            <p className="text-sm text-muted-foreground italic">
-              No summary available for this document. Explore the study tools below.
+            <p className="text-sm text-slate-400 italic">
+              No summary available for this document. Explore the study tools below to begin.
             </p>
           )}
         </div>
 
         {/* Study Tools Grid */}
-        <div className="mb-6">
-          <h2 className="text-xl font-black mb-1">Study Tools</h2>
-          <p className="text-xs text-muted-foreground mb-6">
-            Select an interactive mode to study and master this document
-          </p>
+        <div>
+          <div className="mb-4">
+            <h2 className="text-base font-semibold text-slate-900">Study Tools</h2>
+            <p className="text-xs text-slate-500">
+              Choose an interactive mode to study and retain concepts from this document
+            </p>
+          </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {quickActions.map((action) => {
               const Icon = action.icon;
               return (
@@ -131,15 +135,15 @@ export default function DocumentOverviewPage() {
                   href={action.href}
                   className="block group select-none"
                 >
-                  <Card interactive className="h-full !p-6 flex flex-col justify-between">
+                  <Card interactive className="h-full p-5 flex flex-col justify-between">
                     <div>
-                      <div className="flex items-start justify-between gap-2 mb-4">
-                        <div className="icon-circle bg-primary/10 group-hover:bg-primary/30 transition-colors">
-                          <Icon size={20} className="text-foreground" />
+                      <div className="flex items-start justify-between gap-2 mb-3">
+                        <div className="w-9 h-9 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center border border-slate-200/60 group-hover:bg-blue-50 group-hover:text-blue-600 transition-colors">
+                          <Icon size={18} />
                         </div>
-                        <Badge color={action.color} className="!text-[10px]">
+                        <Badge color={action.color} className="text-[10px]">
                           {action.hasData ? (
-                            <CheckCircle2 size={10} className="text-green-600" />
+                            <CheckCircle2 size={10} className="text-emerald-600" />
                           ) : (
                             <Clock size={10} />
                           )}
@@ -147,19 +151,19 @@ export default function DocumentOverviewPage() {
                         </Badge>
                       </div>
 
-                      <h3 className="text-lg font-black mb-1.5 group-hover:text-primary transition-colors">
+                      <h3 className="text-sm font-semibold text-slate-900 mb-1 group-hover:text-blue-600 transition-colors">
                         {action.title}
                       </h3>
-                      <p className="text-xs text-muted-foreground leading-relaxed">
+                      <p className="text-xs text-slate-500 leading-relaxed">
                         {action.description}
                       </p>
                     </div>
 
-                    <div className="pt-4 mt-4 border-t border-border/30 flex items-center justify-between text-xs font-bold">
-                      <span className="text-muted-foreground group-hover:text-foreground transition-colors">
+                    <div className="pt-3 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-medium">
+                      <span className="text-slate-500 group-hover:text-slate-900 transition-colors">
                         Launch Tool
                       </span>
-                      <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                      <ArrowRight size={13} className="text-slate-400 group-hover:text-blue-600 group-hover:translate-x-0.5 transition-all" />
                     </div>
                   </Card>
                 </Link>

@@ -18,43 +18,38 @@ export const WorkspaceNav: React.FC<WorkspaceNavProps> = ({ documentId }) => {
       href: `/documents/${documentId}`,
       exact: true,
       icon: FileText,
-      tagColor: 'tag-yellow',
     },
     {
       name: 'Chat',
       href: `/documents/${documentId}/chat`,
       exact: false,
       icon: MessageSquare,
-      tagColor: 'tag-mint',
     },
     {
       name: 'Quiz',
       href: `/documents/${documentId}/quiz`,
       exact: false,
       icon: BrainCircuit,
-      tagColor: 'tag-pink',
     },
     {
       name: 'Flashcards',
       href: `/documents/${documentId}/flashcards`,
       exact: false,
       icon: Layers,
-      tagColor: 'tag-purple',
     },
     {
       name: 'Visualize',
       href: `/documents/${documentId}/visualize`,
       exact: false,
       icon: Network,
-      tagColor: 'tag-blue',
     },
   ];
 
   return (
-    <div className="w-full border-b-2 border-border bg-card/60 backdrop-blur-md sticky top-16 z-30">
-      <div className="wrapper py-2">
+    <div className="w-full border-b border-slate-200 bg-white/95 backdrop-blur-md sticky top-14 z-30">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <nav
-          className="flex items-center gap-2 overflow-x-auto no-scrollbar scroll-smooth py-1"
+          className="flex items-center gap-1 overflow-x-auto no-scrollbar py-1"
           aria-label="Document Workspace Navigation"
         >
           {tabs.map((tab) => {
@@ -67,15 +62,24 @@ export const WorkspaceNav: React.FC<WorkspaceNavProps> = ({ documentId }) => {
               <Link
                 key={tab.name}
                 href={tab.href}
-                className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs sm:text-sm font-bold transition-all whitespace-nowrap border-2 select-none ${
+                className={`relative flex items-center gap-2 px-3 py-2 text-xs sm:text-sm font-medium transition-colors whitespace-nowrap select-none rounded-md ${
                   isActive
-                    ? 'bg-foreground text-background border-foreground shadow-[2px_2px_0px_0px_var(--primary)]'
-                    : 'bg-background hover:bg-muted text-foreground border-border hover:-translate-y-0.5'
+                    ? 'text-blue-600 bg-blue-50/80 font-semibold'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                 }`}
                 aria-current={isActive ? 'page' : undefined}
               >
-                <Icon size={16} className={isActive ? 'text-primary' : 'text-muted-foreground'} />
+                <Icon
+                  size={15}
+                  className={isActive ? 'text-blue-600' : 'text-slate-400'}
+                />
                 <span>{tab.name}</span>
+                {isActive && (
+                  <span
+                    className="absolute -bottom-1 left-2 right-2 h-0.5 bg-blue-600 rounded-full"
+                    aria-hidden="true"
+                  />
+                )}
               </Link>
             );
           })}

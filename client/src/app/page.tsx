@@ -19,7 +19,7 @@ export default function Home() {
   if (loading) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
-        <div className="w-8 h-8 rounded-full border-2 border-black border-t-transparent animate-spin" />
+        <div className="w-7 h-7 rounded-full border-2 border-blue-600 border-t-transparent animate-spin" />
       </div>
     );
   }
@@ -29,7 +29,7 @@ export default function Home() {
   }
 
   return (
-    <main>
+    <main className="min-h-[calc(100vh-3.5rem)] pt-14">
       <HeroSection />
       <FeatureCards />
     </main>

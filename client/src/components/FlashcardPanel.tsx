@@ -13,11 +13,13 @@ import {
   Loader2,
   MousePointerClick,
   Layers,
+  CheckCircle2,
 } from 'lucide-react';
 import { api, getErrorMessage } from '@/lib/api';
 import { Flashcard } from '@/types';
 import { Button } from '@/components/ui/button';
 import { ErrorState } from '@/components/ui/error-state';
+import { Badge } from '@/components/ui/badge';
 
 interface FlashcardPanelProps {
   documentId: string;
@@ -130,8 +132,6 @@ export default function FlashcardPanel({ documentId }: FlashcardPanelProps) {
     setFlashState('playing');
   };
 
-
-
   const markMastered = () => {
     setMastered((prev) => new Set(prev).add(currentIdx));
     setReviewing((prev) => {
@@ -170,72 +170,68 @@ export default function FlashcardPanel({ documentId }: FlashcardPanelProps) {
   const card = cards[currentIdx];
   const progressPct = cards.length > 0 ? ((currentIdx + 1) / cards.length) * 100 : 0;
 
-  const categoryColors: Record<string, string> = {};
-  const colorPool = ['tag-yellow', 'tag-mint', 'tag-pink', 'tag-purple', 'tag-peach', 'tag-blue'];
-  cards.forEach((c) => {
-    if (!categoryColors[c.category]) {
-      categoryColors[c.category] = colorPool[Object.keys(categoryColors).length % colorPool.length];
-    }
-  });
-
   return (
     <div className="max-w-2xl mx-auto px-4 py-8">
       <AnimatePresence mode="wait">
         {flashState === 'intro' && (
           <motion.div
             key="intro"
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -16 }}
-            className="bento-card-static !p-8 sm:!p-12 text-center"
+            exit={{ opacity: 0, y: -12 }}
+            className="border border-slate-200 bg-white rounded-xl p-8 sm:p-10 text-center shadow-xs"
           >
-            <div className="icon-circle bg-primary/20 !w-16 !h-16 mx-auto mb-6">
-              <Layers size={28} className="text-foreground" />
+            <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mx-auto mb-4 border border-blue-100">
+              <Layers size={24} />
             </div>
-            <h2 className="text-2xl font-black mb-3">Document Study Flashcards</h2>
-            <p className="text-sm text-muted-foreground mb-4 max-w-md mx-auto">
+            <h2 className="text-xl font-semibold tracking-tight text-slate-900 mb-2">
+              Document Study Flashcards
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-500 mb-6 max-w-md mx-auto leading-relaxed">
               Master core terminology, definitions, and concepts with 3D interactive flashcards.
             </p>
-            <div className="flex items-center justify-center gap-3 text-xs mb-8">
-              <span className="tag tag-purple">
-                <Layers size={10} /> 10 Flashcards
+
+            <div className="flex items-center justify-center gap-2 text-xs mb-8">
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-200 text-xs font-medium">
+                <Layers size={11} className="text-blue-600" /> 10 Flashcards
               </span>
-              <span className="tag tag-mint">
-                <CheckCircle size={10} /> Active Recall
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-200 text-xs font-medium">
+                <CheckCircle2 size={11} className="text-emerald-600" /> Active Recall
               </span>
             </div>
 
-            <div className="flex flex-col gap-3 max-w-sm mx-auto">
+            <div className="flex flex-col gap-2.5 max-w-sm mx-auto">
               {hasExistingCards ? (
                 <>
                   <Button
                     onClick={startStudying}
                     variant="primary"
-                    size="lg"
-                    className="w-full flex items-center justify-center gap-2"
+                    size="md"
+                    className="w-full justify-center gap-2"
                   >
-                    <span>Study Saved Cards ({cards.length})</span>
-                    <ArrowRight size={16} />
+                    <span>Study Deck ({cards.length} cards)</span>
+                    <ArrowRight size={15} />
                   </Button>
                   <Button
                     onClick={generateFlashcards}
-                    variant="secondary"
-                    className="w-full flex items-center justify-center gap-2"
+                    variant="outline"
+                    size="sm"
+                    className="w-full justify-center gap-2"
                   >
-                    <RefreshCw size={14} />
-                    <span>Regenerate New Cards</span>
+                    <RefreshCw size={13} />
+                    <span>Regenerate Cards</span>
                   </Button>
                 </>
               ) : (
                 <Button
                   onClick={generateFlashcards}
                   variant="primary"
-                  size="lg"
-                  className="w-full flex items-center justify-center gap-2"
+                  size="md"
+                  className="w-full justify-center gap-2"
                 >
-                  <Sparkles size={16} />
+                  <Sparkles size={15} />
                   <span>Generate Flashcards</span>
-                  <ArrowRight size={16} />
+                  <ArrowRight size={15} />
                 </Button>
               )}
             </div>
@@ -245,17 +241,19 @@ export default function FlashcardPanel({ documentId }: FlashcardPanelProps) {
         {flashState === 'loading' && (
           <motion.div
             key="loading"
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -16 }}
-            className="bento-card-static !p-8 sm:!p-12 text-center"
+            exit={{ opacity: 0, y: -12 }}
+            className="border border-slate-200 bg-white rounded-xl p-8 sm:p-12 text-center shadow-xs"
           >
-            <div className="icon-circle bg-primary/20 !w-16 !h-16 mx-auto mb-6">
-              <Loader2 size={30} className="animate-spin text-foreground" />
+            <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mx-auto mb-4 border border-blue-100">
+              <Loader2 size={24} className="animate-spin" />
             </div>
-            <h3 className="text-xl font-black mb-2">Crafting Flashcards...</h3>
-            <p className="text-sm text-muted-foreground max-w-sm mx-auto">
-              Extracting core definitions and key learning points from your document.
+            <h3 className="text-base font-semibold text-slate-900 mb-1">
+              Extracting Core Concepts...
+            </h3>
+            <p className="text-xs text-slate-500 max-w-sm mx-auto leading-relaxed">
+              Formulating spaced-repetition prompt and answer pairs from the document.
             </p>
           </motion.div>
         )}
@@ -268,29 +266,29 @@ export default function FlashcardPanel({ documentId }: FlashcardPanelProps) {
             exit={{ opacity: 0 }}
           >
             {/* Header progress */}
-            <div className="flex items-center justify-between mb-3">
-              <span className="label-text">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">
                 Card {currentIdx + 1} of {cards.length}
               </span>
               <div className="flex items-center gap-2">
-                <span className="tag tag-mint text-[10px]">
-                  <CheckCircle size={10} /> {mastered.size} mastered
+                <span className="text-[11px] font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200/70">
+                  {mastered.size} mastered
                 </span>
-                <span className="tag tag-pink text-[10px]">
-                  <RefreshCw size={10} /> {reviewing.size} review
+                <span className="text-[11px] font-medium text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-200/70">
+                  {reviewing.size} review
                 </span>
               </div>
             </div>
 
-            <div className="w-full bg-muted rounded-full h-2 mb-5 border border-border overflow-hidden">
+            <div className="w-full bg-slate-100 rounded-full h-1.5 mb-5 overflow-hidden border border-slate-200/50">
               <motion.div
-                className="h-full bg-primary rounded-full"
+                className="h-full bg-blue-600 rounded-full"
                 animate={{ width: `${progressPct}%` }}
-                transition={{ ease: 'easeOut', duration: 0.3 }}
+                transition={{ ease: 'easeOut', duration: 0.25 }}
               />
             </div>
 
-            {/* 3D Flip Card */}
+            {/* 3D Flip Card Container */}
             <div
               className="perspective-[1200px] mb-5 cursor-pointer select-none"
               onClick={() => setIsFlipped(!isFlipped)}
@@ -298,104 +296,108 @@ export default function FlashcardPanel({ documentId }: FlashcardPanelProps) {
               <motion.div
                 className="relative w-full"
                 animate={{ rotateY: isFlipped ? 180 : 0 }}
-                transition={{ duration: 0.45, ease: [0.4, 0, 0.2, 1] }}
+                transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
                 style={{ transformStyle: 'preserve-3d' }}
               >
                 {/* Front Side */}
                 <div
-                  className="bento-card-static !p-8 sm:!p-12 min-h-[280px] flex flex-col items-center justify-center text-center border-2 border-border shadow-[4px_4px_0px_0px_var(--border-color)]"
+                  className="border border-slate-200 bg-white rounded-xl p-8 sm:p-12 min-h-[280px] flex flex-col items-center justify-center text-center shadow-xs hover:border-slate-300 transition-colors"
                   style={{ backfaceVisibility: 'hidden' }}
                 >
-                  <span className={`tag ${categoryColors[card.category] || 'tag-purple'} text-[10px] mb-6`}>
+                  <Badge color="blue" className="mb-6">
                     {card.category}
-                  </span>
-                  <p className="text-xl sm:text-2xl font-black leading-relaxed max-w-md">{card.front}</p>
-                  <p className="text-xs text-muted-foreground mt-6 flex items-center gap-1.5 font-bold">
-                    <MousePointerClick size={14} /> Tap or press Space to flip
+                  </Badge>
+                  <p className="text-lg sm:text-2xl font-semibold text-slate-900 leading-relaxed max-w-md">
+                    {card.front}
+                  </p>
+                  <p className="text-xs text-slate-400 mt-6 flex items-center gap-1.5 font-medium">
+                    <MousePointerClick size={13} /> Click or press Space to flip
                   </p>
                 </div>
 
                 {/* Back Side */}
                 <div
-                  className="bento-card-static !p-8 sm:!p-12 min-h-[280px] flex flex-col items-center justify-center text-center absolute inset-0 border-2 border-border shadow-[4px_4px_0px_0px_var(--border-color)] bg-[var(--bg-mint)] text-black"
+                  className="border border-blue-200 bg-slate-50 text-slate-900 rounded-xl p-8 sm:p-12 min-h-[280px] flex flex-col items-center justify-center text-center shadow-xs absolute inset-0"
                   style={{
                     backfaceVisibility: 'hidden',
                     transform: 'rotateY(180deg)',
                   }}
                 >
-                  <span className="tag text-[10px] mb-6 bg-card text-foreground">
+                  <Badge color="slate" className="mb-6">
                     {card.category}
-                  </span>
-                  <p className="text-base sm:text-lg font-bold leading-relaxed max-w-md text-black">{card.back}</p>
-                  <p className="text-xs text-black/60 mt-6 font-bold">
-                    Mark your mastery below
+                  </Badge>
+                  <p className="text-sm sm:text-base text-slate-800 leading-relaxed max-w-md">
+                    {card.back}
+                  </p>
+                  <p className="text-xs text-slate-400 mt-6 font-medium">
+                    Assess your mastery below
                   </p>
                 </div>
               </motion.div>
             </div>
 
-            {/* Answer buttons shown after flip */}
+            {/* Answer Assessment Buttons (shown after flip) */}
             <AnimatePresence>
               {isFlipped && (
                 <motion.div
-                  initial={{ opacity: 0, y: 10 }}
+                  initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 10 }}
+                  exit={{ opacity: 0, y: 8 }}
                   className="grid grid-cols-2 gap-3 mb-5"
                 >
                   <Button
                     onClick={markMastered}
-                    variant="secondary"
-                    className="!bg-[var(--bg-mint)] text-black justify-center text-sm py-3"
+                    variant="success"
+                    size="md"
+                    className="justify-center gap-2"
                   >
-                    <CheckCircle size={16} />
-                    <span>Got it! (Mastered)</span>
+                    <CheckCircle size={15} />
+                    <span>Mastered</span>
                   </Button>
                   <Button
                     onClick={markReview}
-                    variant="secondary"
-                    className="!bg-[var(--bg-pink)] text-black justify-center text-sm py-3"
+                    variant="outline"
+                    size="md"
+                    className="justify-center gap-2"
                   >
-                    <RefreshCw size={16} />
+                    <RefreshCw size={14} />
                     <span>Needs Review</span>
                   </Button>
                 </motion.div>
               )}
             </AnimatePresence>
 
-            {/* Navigation controls */}
+            {/* Navigation Controls */}
             <div className="flex items-center justify-between">
               <Button
                 onClick={prevCard}
                 disabled={currentIdx === 0}
-                variant="secondary"
+                variant="outline"
                 size="sm"
-                className="disabled:opacity-30 disabled:cursor-not-allowed"
+                className="gap-1.5"
               >
-                <ArrowLeft size={14} />
+                <ArrowLeft size={13} />
                 <span>Previous</span>
               </Button>
 
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={shuffleCards}
-                  className="p-2.5 rounded-xl border-2 border-border bg-card hover:bg-muted transition-all"
-                  title="Shuffle deck"
-                  aria-label="Shuffle deck"
-                >
-                  <Shuffle size={14} />
-                </button>
-              </div>
+              <button
+                onClick={shuffleCards}
+                className="p-2 rounded-md border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 transition-colors"
+                title="Shuffle deck"
+                aria-label="Shuffle deck"
+              >
+                <Shuffle size={14} />
+              </button>
 
               <Button
                 onClick={nextCard}
                 disabled={currentIdx === cards.length - 1}
-                variant="secondary"
+                variant="outline"
                 size="sm"
-                className="disabled:opacity-30 disabled:cursor-not-allowed"
+                className="gap-1.5"
               >
                 <span>Next</span>
-                <ArrowRight size={14} />
+                <ArrowRight size={13} />
               </Button>
             </div>
           </motion.div>
@@ -404,34 +406,39 @@ export default function FlashcardPanel({ documentId }: FlashcardPanelProps) {
         {flashState === 'result' && (
           <motion.div
             key="result"
-            initial={{ opacity: 0, scale: 0.95 }}
+            initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }}
-            className="bento-card-static !p-8 sm:!p-12 text-center"
+            className="border border-slate-200 bg-white rounded-xl p-8 sm:p-10 text-center shadow-xs"
           >
-            <div className="text-5xl mb-4 select-none">🎉</div>
-            <h2 className="text-2xl font-black mb-2">Deck Completed!</h2>
-            <p className="text-sm text-muted-foreground mb-6">
-              Great study session! Here is your retention breakdown:
+            <div className="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mx-auto mb-4 border border-blue-100">
+              <CheckCircle2 size={28} />
+            </div>
+
+            <h2 className="text-xl font-semibold tracking-tight text-slate-900 mb-1">
+              Deck Completed
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-500 mb-6">
+              Review session summary:
             </p>
 
-            <div className="grid grid-cols-2 gap-4 max-w-sm mx-auto mb-8">
-              <div className="bento-card-static !p-4 !bg-[var(--bg-mint)]/30 border-green-600/30">
-                <span className="text-2xl font-black text-green-700 dark:text-green-400">{mastered.size}</span>
-                <p className="text-xs font-bold text-muted-foreground mt-1">Mastered</p>
+            <div className="grid grid-cols-2 gap-3 max-w-sm mx-auto mb-8">
+              <div className="p-4 rounded-lg bg-emerald-50 border border-emerald-200 text-center">
+                <span className="text-2xl font-bold text-emerald-700">{mastered.size}</span>
+                <p className="text-xs font-medium text-emerald-800 mt-1">Mastered</p>
               </div>
-              <div className="bento-card-static !p-4 !bg-[var(--bg-pink)]/30 border-red-600/30">
-                <span className="text-2xl font-black text-red-700 dark:text-red-400">{reviewing.size}</span>
-                <p className="text-xs font-bold text-muted-foreground mt-1">Needs Review</p>
+              <div className="p-4 rounded-lg bg-amber-50 border border-amber-200 text-center">
+                <span className="text-2xl font-bold text-amber-700">{reviewing.size}</span>
+                <p className="text-xs font-medium text-amber-800 mt-1">Needs Review</p>
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-3 justify-center max-w-sm mx-auto">
-              <Button onClick={startStudying} variant="primary" className="flex-1 flex items-center justify-center gap-2">
-                <RotateCcw size={16} />
+            <div className="flex flex-col sm:flex-row gap-2.5 justify-center max-w-sm mx-auto">
+              <Button onClick={startStudying} variant="primary" size="md" className="flex-1 justify-center gap-2">
+                <RotateCcw size={14} />
                 <span>Review Again</span>
               </Button>
-              <Button onClick={generateFlashcards} variant="secondary" className="flex-1 flex items-center justify-center gap-2">
+              <Button onClick={generateFlashcards} variant="outline" size="md" className="flex-1 justify-center gap-2">
                 <RefreshCw size={14} />
                 <span>New Flashcards</span>
               </Button>
