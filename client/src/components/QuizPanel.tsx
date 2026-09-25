@@ -14,7 +14,7 @@ import {
   Sparkles,
   RefreshCw,
 } from 'lucide-react';
-import { api } from '@/lib/api';
+import { api, getErrorMessage } from '@/lib/api';
 import { QuizQuestion } from '@/types';
 import { Button } from '@/components/ui/button';
 import { ErrorState } from '@/components/ui/error-state';
@@ -50,9 +50,9 @@ export default function QuizPanel({ documentId }: QuizPanelProps) {
         setHasExistingQuiz(false);
         setQuizState('intro');
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       // 404 is expected when quiz has not been generated yet
-      if (err?.response?.status === 404) {
+      if ((err as { response?: { status?: number } })?.response?.status === 404) {
         setHasExistingQuiz(false);
         setQuizState('intro');
       } else {
@@ -87,12 +87,9 @@ export default function QuizPanel({ documentId }: QuizPanelProps) {
       } else {
         throw new Error('No questions returned by the AI');
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Quiz Generation Error:', err);
-      const msg =
-        err?.response?.data?.error?.message ||
-        err?.message ||
-        'Failed to generate quiz. Please try again.';
+      const msg = getErrorMessage(err, 'Failed to generate quiz. Please try again.');
       setErrorMsg(msg);
       setQuizState('error');
     }

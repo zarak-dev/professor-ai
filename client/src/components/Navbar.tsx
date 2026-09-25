@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, LogOut, FileText, Upload, Plus } from "lucide-react";
+import { Menu, X, LogOut, FileText, Upload } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 
 export const Navbar = () => {

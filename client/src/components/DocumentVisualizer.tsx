@@ -7,7 +7,6 @@ import {
   Eye,
   Zap,
   Loader2,
-  AlertCircle,
   Sparkles,
   ChevronDown,
   ChevronUp,
@@ -16,7 +15,7 @@ import {
   RefreshCw,
   ArrowRight,
 } from 'lucide-react';
-import { api } from '@/lib/api';
+import { api, getErrorMessage } from '@/lib/api';
 import { VisualizationData } from '@/types';
 import { Button } from '@/components/ui/button';
 import { ErrorState } from '@/components/ui/error-state';
@@ -56,8 +55,8 @@ export default function DocumentVisualizer({ documentId }: DocumentVisualizerPro
         setHasExistingViz(false);
         setVisState('intro');
       }
-    } catch (err: any) {
-      if (err?.response?.status === 404) {
+    } catch (err: unknown) {
+      if ((err as { response?: { status?: number } })?.response?.status === 404) {
         setHasExistingViz(false);
         setVisState('intro');
       } else {
@@ -88,12 +87,9 @@ export default function DocumentVisualizer({ documentId }: DocumentVisualizerPro
       } else {
         throw new Error('Invalid visualization response from AI');
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Visualization Generation Error:', err);
-      const msg =
-        err?.response?.data?.error?.message ||
-        err?.message ||
-        'Failed to generate visualization. Please try again.';
+      const msg = getErrorMessage(err, 'Failed to generate visualization. Please try again.');
       setErrorMsg(msg);
       setVisState('error');
     }
@@ -101,11 +97,6 @@ export default function DocumentVisualizer({ documentId }: DocumentVisualizerPro
 
   const toggleTopic = (idx: number) => {
     setExpandedTopic(expandedTopic === idx ? null : idx);
-  };
-
-  const getTopicIndex = (name: string): number => {
-    if (!data) return -1;
-    return data.topics.findIndex((t) => t.name.toLowerCase() === name.toLowerCase());
   };
 
   return (

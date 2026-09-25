@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
+import { getErrorMessage } from '@/lib/api';
 import { LogIn, UserPlus, Loader2, AlertCircle, Mail, Lock, User, ArrowRight } from 'lucide-react';
 
 export default function SignInPage() {
@@ -34,10 +35,8 @@ export default function SignInPage() {
         await login(email, password);
       }
       router.push('/');
-    } catch (err: any) {
-      console.error("Auth Error details:", err?.response?.data || err);
-      const msg =
-        err?.response?.data?.error || err?.message || 'Something went wrong. Please try again.';
+    } catch (err: unknown) {
+      const msg = getErrorMessage(err, 'Something went wrong. Please try again.');
       setError(msg);
     } finally {
       setLoading(false);

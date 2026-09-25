@@ -1,5 +1,6 @@
-import { Request, Response } from "express"
+import { Request, Response, NextFunction } from "express"
 import { IAuthService } from "../interfaces/IAuthService"
+import { AppError } from "../errors/app-error"
 
 export class AuthController {
     private authService: IAuthService;
@@ -8,18 +9,16 @@ export class AuthController {
         this.authService = authService;
     }
 
-    register = async (req: Request, res: Response) => {
+    register = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { name, email, password } = req.body
 
             if (!name || !email || !password) {
-                res.status(400).json({ error: "Name, email, and password are required" })
-                return
+                return next(AppError.badRequest("Name, email, and password are required", "VALIDATION_ERROR"))
             }
 
             if (password.length < 6) {
-                res.status(400).json({ error: "Password must be at least 6 characters" })
-                return
+                return next(AppError.badRequest("Password must be at least 6 characters", "VALIDATION_ERROR"))
             }
 
             const result = await this.authService.register(name, email, password)
@@ -36,17 +35,16 @@ export class AuthController {
 
         } catch (error: any) {
             console.error("Registration Error:", error.message)
-            res.status(400).json({ error: error.message || "Registration failed" })
+            next(AppError.badRequest(error.message || "Registration failed", "AUTH_ERROR"))
         }
     }
 
-    login = async (req: Request, res: Response) => {
+    login = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { email, password } = req.body
 
             if (!email || !password) {
-                res.status(400).json({ error: "Email and password are required" })
-                return
+                return next(AppError.badRequest("Email and password are required", "VALIDATION_ERROR"))
             }
 
             const result = await this.authService.login(email, password)
@@ -55,22 +53,21 @@ export class AuthController {
 
         } catch (error: any) {
             console.error("Login Error:", error.message)
-            res.status(401).json({ error: error.message || "Login failed" })
+            next(AppError.unauthorized(error.message || "Login failed", "AUTHENTICATION_ERROR"))
         }
     }
 
-    getMe = async (req: Request, res: Response) => {
+    getMe = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const user = res.locals.user;
             if (!user) {
-                res.status(401).json({ error: "Not authenticated" })
-                return
+                return next(AppError.unauthorized("Not authenticated"))
             }
 
             res.json({ user })
 
         } catch (error: any) {
-            res.status(500).json({ error: "Failed to get user info" })
+            next(error)
         }
     }
 }

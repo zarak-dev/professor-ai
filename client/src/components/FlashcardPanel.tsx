@@ -14,7 +14,7 @@ import {
   MousePointerClick,
   Layers,
 } from 'lucide-react';
-import { api } from '@/lib/api';
+import { api, getErrorMessage } from '@/lib/api';
 import { Flashcard } from '@/types';
 import { Button } from '@/components/ui/button';
 import { ErrorState } from '@/components/ui/error-state';
@@ -50,8 +50,8 @@ export default function FlashcardPanel({ documentId }: FlashcardPanelProps) {
         setHasExistingCards(false);
         setFlashState('intro');
       }
-    } catch (err: any) {
-      if (err?.response?.status === 404) {
+    } catch (err: unknown) {
+      if ((err as { response?: { status?: number } })?.response?.status === 404) {
         setHasExistingCards(false);
         setFlashState('intro');
       } else {
@@ -66,6 +66,20 @@ export default function FlashcardPanel({ documentId }: FlashcardPanelProps) {
     loadExistingFlashcards();
   }, [loadExistingFlashcards]);
 
+  const nextCard = useCallback(() => {
+    if (currentIdx < cards.length - 1) {
+      setCurrentIdx((i) => i + 1);
+      setIsFlipped(false);
+    }
+  }, [currentIdx, cards.length]);
+
+  const prevCard = useCallback(() => {
+    if (currentIdx > 0) {
+      setCurrentIdx((i) => i - 1);
+      setIsFlipped(false);
+    }
+  }, [currentIdx]);
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (flashState !== 'playing') return;
@@ -78,7 +92,7 @@ export default function FlashcardPanel({ documentId }: FlashcardPanelProps) {
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [flashState, currentIdx, cards.length]);
+  }, [flashState, nextCard, prevCard]);
 
   const generateFlashcards = async () => {
     if (!documentId) return;
@@ -100,12 +114,9 @@ export default function FlashcardPanel({ documentId }: FlashcardPanelProps) {
       } else {
         throw new Error('No flashcards returned by the AI');
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Flashcard Generation Error:', err);
-      const msg =
-        err?.response?.data?.error?.message ||
-        err?.message ||
-        'Failed to generate flashcards. Please try again.';
+      const msg = getErrorMessage(err, 'Failed to generate flashcards. Please try again.');
       setErrorMsg(msg);
       setFlashState('error');
     }
@@ -119,19 +130,7 @@ export default function FlashcardPanel({ documentId }: FlashcardPanelProps) {
     setFlashState('playing');
   };
 
-  const nextCard = () => {
-    if (currentIdx < cards.length - 1) {
-      setCurrentIdx((i) => i + 1);
-      setIsFlipped(false);
-    }
-  };
 
-  const prevCard = () => {
-    if (currentIdx > 0) {
-      setCurrentIdx((i) => i - 1);
-      setIsFlipped(false);
-    }
-  };
 
   const markMastered = () => {
     setMastered((prev) => new Set(prev).add(currentIdx));

@@ -1,10 +1,10 @@
 'use client';
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
-import { Send, Loader2, Sparkles, Bot, AlertCircle } from 'lucide-react';
-import { api } from '@/lib/api';
+import { Send, Loader2, Sparkles, Bot } from 'lucide-react';
+import { api, getErrorMessage } from '@/lib/api';
 import { ChatMessage } from '@/types';
 
 interface Message {
@@ -49,7 +49,7 @@ export default function ChatInterface({ documentId }: ChatInterfaceProps) {
           },
         ]);
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Failed to load chat history:', err);
       setMessages([
         {
@@ -109,12 +109,9 @@ export default function ChatInterface({ documentId }: ChatInterfaceProps) {
         timestamp: new Date(),
       };
       setMessages((prev) => [...prev, aiMsg]);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Chat error:', err);
-      const errorText =
-        err?.response?.data?.error?.message ||
-        err?.message ||
-        'Sorry, I could not process your message right now. Please try again.';
+      const errorText = getErrorMessage(err, 'Sorry, I could not process your message right now. Please try again.');
       const errMsg: Message = {
         id: (Date.now() + 1).toString(),
         text: `⚠️ **Error:** ${errorText}`,

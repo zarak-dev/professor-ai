@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { api } from '@/lib/api';
+import { api, getErrorMessage } from '@/lib/api';
 import { DocumentItem } from '@/types';
 import { useAuth } from './AuthContext';
 
@@ -32,9 +32,9 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
     try {
       const res = await api.get(`/documents/${documentId}`);
       setDocument(res.data.document);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Failed to load document:', err);
-      const msg = err?.response?.data?.error?.message || err?.message || 'Document could not be loaded';
+      const msg = getErrorMessage(err, 'Document could not be loaded');
       setError(msg);
     } finally {
       setLoading(false);

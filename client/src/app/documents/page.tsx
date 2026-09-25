@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { FileText, Inbox, Sparkles, Plus } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
-import { api } from '@/lib/api';
+import { api, getErrorMessage } from '@/lib/api';
 import { DocumentItem } from '@/types';
 import { DocumentCard } from '@/components/features/documents/document-card';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -24,9 +24,9 @@ export default function DocumentsDashboard() {
     try {
       const res = await api.get('/documents');
       setDocuments(res.data.documents || []);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Failed to fetch documents:', err);
-      setError(err?.response?.data?.error?.message || err?.message || 'Failed to load your documents');
+      setError(getErrorMessage(err, 'Failed to load your documents'));
     } finally {
       setLoading(false);
     }

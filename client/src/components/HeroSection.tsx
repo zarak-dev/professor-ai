@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { ArrowRight, Upload, Sparkles, MessageSquare, BrainCircuit, FileText } from 'lucide-react';
+import { ArrowRight, Sparkles, MessageSquare, BrainCircuit, FileText } from 'lucide-react';
 
 const container = {
   hidden: {},
@@ -71,7 +71,7 @@ export default function HeroSection() {
                 </p>
               </div>
               <div className="flex-1 bg-secondary/30 border-2 border-foreground rounded-2xl p-4 text-center">
-                <div className="text-3xl mb-2"></div>
+                <div className="text-3xl mb-2">⚡</div>
                 <p className="text-sm font-bold">Architecture</p>
                 <p className="text-xs text-muted-foreground">
                   MVC + OOP Design

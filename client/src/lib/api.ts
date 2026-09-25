@@ -29,7 +29,9 @@ api.interceptors.response.use(
     if (typeof window !== 'undefined') {
       if (error.response?.status === 401) {
         localStorage.removeItem('token');
+        localStorage.removeItem('prof_token');
         localStorage.removeItem('user');
+        localStorage.removeItem('prof_user');
         
         // Only redirect if not already on the sign-in page
         if (!window.location.pathname.includes('/sign-in')) {
@@ -40,5 +42,18 @@ api.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+export function getErrorMessage(err: unknown, fallback: string = 'An error occurred'): string {
+  if (axios.isAxiosError(err)) {
+    const errorData = err.response?.data?.error;
+    if (typeof errorData === 'string') return errorData;
+    if (errorData?.message) return errorData.message;
+    if (err.response?.data?.message) return err.response.data.message;
+    if (err.message) return err.message;
+  } else if (err instanceof Error) {
+    return err.message;
+  }
+  return fallback;
+}
 
 export default api;

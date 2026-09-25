@@ -15,7 +15,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
-import { api } from '@/lib/api';
+import { api, getErrorMessage } from '@/lib/api';
 import { DocumentItem } from '@/types';
 import { Button } from '@/components/ui/button';
 
@@ -47,7 +47,7 @@ export default function PdfUploader() {
     return null;
   };
 
-  const uploadFile = async (f: File) => {
+  const uploadFile = useCallback(async (f: File) => {
     if (!isAuthenticated) {
       router.push('/sign-in');
       return;
@@ -79,17 +79,13 @@ export default function PdfUploader() {
         router.push(`/documents/${doc._id}`);
       }, 1200);
 
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Upload Error:', err);
-      const msg =
-        err?.response?.data?.error?.message ||
-        err?.response?.data?.error ||
-        err?.message ||
-        'Upload failed. Please try again.';
+      const msg = getErrorMessage(err, 'Upload failed. Please try again.');
       setError(msg);
       setState('error');
     }
-  };
+  }, [isAuthenticated, router]);
 
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -102,7 +98,7 @@ export default function PdfUploader() {
       return;
     }
     uploadFile(f);
-  }, [isAuthenticated]);
+  }, [uploadFile]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0];
