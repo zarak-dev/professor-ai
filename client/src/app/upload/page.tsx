@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import PdfUploader from '@/components/PdfUploader';
 
 export const metadata: Metadata = {
-  title: 'Upload Document | The Professor',
+  title: 'Upload',
   description: 'Upload PDF documents for AI-powered extraction, analysis, and interactive tutoring.',
 };
 

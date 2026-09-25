@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import RouteTitleSync from "@/components/RouteTitleSync";
 import { AuthProvider } from "@/context/AuthContext";
 
 const geistSans = Geist({
@@ -16,7 +17,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "The Professor | Aimmyy AI Document Intelligence",
+  title: {
+    default: "The Professor | Home",
+    template: "The Professor | %s",
+  },
   description:
     "Transform static PDFs into interactive, conversational learning environments powered by Aimmyy AI. A Project by Zarak K.",
   keywords: ["AI", "PDF", "document analysis", "quiz generation", "learning", "Aimmyy AI", "Zarak K"],
@@ -39,6 +43,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        <RouteTitleSync />
         <AuthProvider>
           <Navbar />
           <div className="flex-1">{children}</div>

@@ -25,13 +25,10 @@ export default function HeroSection() {
         className="flex flex-col items-center text-center max-w-3xl mx-auto mb-16"
       >
         {/* Pill Badge */}
-        <motion.div variants={item} className="mb-6 flex flex-wrap items-center justify-center gap-2">
+        <motion.div variants={item} className="mb-6 flex items-center justify-center">
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-[#F0F5F8] text-[#213448] border border-[#CADDE6]">
             <Sparkles size={12} className="text-[#547792]" />
             Powered by Aimmyy AI
-          </span>
-          <span className="text-xs text-[#547792] font-medium hidden sm:inline-block">
-            • A Project by <strong className="text-[#213448] font-semibold">Zarak K.</strong>
           </span>
         </motion.div>
 

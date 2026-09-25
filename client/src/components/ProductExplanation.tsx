@@ -65,7 +65,7 @@ export default function ProductExplanation() {
     <section id="features" className="max-w-6xl mx-auto px-4 sm:px-6 py-16 border-t border-[#E2DBD0]">
       <div className="max-w-3xl mb-12">
         <p className="text-xs font-semibold uppercase tracking-wider text-[#547792] mb-1.5">
-          Product Overview
+          Overview
         </p>
         <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-[#213448] mb-3">
           What is The Professor?
