@@ -7,7 +7,7 @@ export default function Footer() {
         <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 text-center sm:text-left">
           <p>© {new Date().getFullYear()} The Professor.</p>
           <span className="hidden sm:inline-block text-[#94B4C1]">•</span>
-          <p className="font-semibold text-[#213448]">A Project by Zarak K.</p>
+          <p>A Project by Zarak K.</p>
         </div>
 
         <div className="flex items-center gap-5">
