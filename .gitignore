@@ -1,0 +1,28 @@
+# End of file env setup
+.env
+.env.*
+
+# Dependencies
+node_modules/
+server/node_modules/
+client/node_modules/
+
+# Compiled outputs
+dist/
+build/
+.next/
+client/.next/
+server/dist/
+
+# System specific
+.DS_Store
+*.pem
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Unwanted files
+server/test_*.js
+server/uploads/
