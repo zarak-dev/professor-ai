@@ -3,29 +3,51 @@ import { ChatAIService, ChatMessage } from "../interfaces/ChatAIService";
 
 export class GroqService implements ChatAIService {
     private groq: Groq;
-    private model: string;
+    private preferredModel: string;
+    private static candidateModels: string[] = [
+        process.env.GROQ_MODEL || "",
+        "openai/gpt-oss-120b",
+        "openai/gpt-oss-20b",
+        "llama-3.3-70b-versatile",
+        "llama-3.1-8b-instant"
+    ].filter(Boolean);
 
-    constructor(apiKey: string, model: string = "llama-3.1-8b-instant") {
+    constructor(apiKey: string, model: string = "openai/gpt-oss-120b") {
         this.groq = new Groq({ apiKey });
-        this.model = model;
+        this.preferredModel = process.env.GROQ_MODEL || model;
+    }
+
+    private getModelCandidates(): string[] {
+        const list = [this.preferredModel, ...GroqService.candidateModels];
+        return Array.from(new Set(list));
     }
 
     async generateContent(prompt: string): Promise<string> {
         console.log("Routing prompt to Groq...");
+        const candidates = this.getModelCandidates();
+        let lastError: any = null;
 
-        const chatCompletion = await this.groq.chat.completions.create({
-            messages: [{ role: "user", content: prompt }],
-            model: this.model
-        });
+        for (const candidate of candidates) {
+            try {
+                console.log(`[Groq] Attempting generation with model: ${candidate}`);
+                const chatCompletion = await this.groq.chat.completions.create({
+                    messages: [{ role: "user", content: prompt }],
+                    model: candidate
+                });
 
-        const response = chatCompletion.choices[0]?.message?.content;
-
-        if (!response) {
-            throw new Error("Groq returned no answers");
+                const response = chatCompletion.choices[0]?.message?.content;
+                if (response) {
+                    this.preferredModel = candidate;
+                    console.log(`Success: Received response from Groq using ${candidate}.`);
+                    return response;
+                }
+            } catch (err: any) {
+                console.warn(`[Groq] Model ${candidate} failed: ${err.message}`);
+                lastError = err;
+            }
         }
 
-        console.log("Success: Received response from Groq.");
-        return response;
+        throw lastError || new Error("Groq returned no answers across all available models");
     }
 
     async generateChatResponse(prompt: string, history: ChatMessage[] = []): Promise<string> {
@@ -37,18 +59,29 @@ export class GroqService implements ChatAIService {
         }));
         groqMessages.push({ role: 'user' as const, content: prompt });
 
-        const chatCompletion = await this.groq.chat.completions.create({
-            messages: groqMessages,
-            model: this.model
-        });
+        const candidates = this.getModelCandidates();
+        let lastError: any = null;
 
-        const response = chatCompletion.choices[0]?.message?.content;
+        for (const candidate of candidates) {
+            try {
+                console.log(`[Groq] Attempting chat with model: ${candidate}`);
+                const chatCompletion = await this.groq.chat.completions.create({
+                    messages: groqMessages,
+                    model: candidate
+                });
 
-        if (!response) {
-            throw new Error("Groq returned no answers");
+                const response = chatCompletion.choices[0]?.message?.content;
+                if (response) {
+                    this.preferredModel = candidate;
+                    console.log(`Success: Received chat response from Groq using ${candidate}.`);
+                    return response;
+                }
+            } catch (err: any) {
+                console.warn(`[Groq] Chat model ${candidate} failed: ${err.message}`);
+                lastError = err;
+            }
         }
 
-        console.log("Success: Received chat response from Groq.");
-        return response;
+        throw lastError || new Error("Groq returned no chat answers across all available models");
     }
 }

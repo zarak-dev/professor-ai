@@ -36,6 +36,4 @@ const QuizSchema = new Schema<IQuiz>({
     timestamps: true
 })
 
-QuizSchema.index({ doc_id: 1 }, { unique: true });
-
 export default mongoose.model<IQuiz>("Quiz", QuizSchema)

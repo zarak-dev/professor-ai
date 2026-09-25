@@ -34,6 +34,4 @@ const FlashcardSchema = new Schema<IFlashcard>({
     timestamps: true
 })
 
-FlashcardSchema.index({ doc_id: 1 }, { unique: true });
-
 export default mongoose.model<IFlashcard>("Flashcard", FlashcardSchema)

@@ -24,10 +24,11 @@ export class ChatController {
                 return next(AppError.notFound("Document not found"));
             }
 
-            const { prompt } = req.body;
-            if (!prompt || typeof prompt !== 'string' || prompt.trim().length === 0) {
+            const rawText = req.body.prompt || req.body.message;
+            if (!rawText || typeof rawText !== 'string' || rawText.trim().length === 0) {
                 return next(AppError.badRequest("Message is required", "VALIDATION_ERROR"));
             }
+            const prompt = rawText.trim();
 
             // Load existing chat history from MongoDB
             const pastMessages = await this.chatHistoryRepository.findByDocId(user.userId, doc._id.toString());

@@ -118,13 +118,32 @@ export class LocalAuthService implements IAuthService {
     let storedHash: string;
 
     if (this.isMongoConnected()) {
-      const user = await UserModel.findOne({ email: normalizedEmail });
+      let user = await UserModel.findOne({ email: normalizedEmail });
       if (!user) {
-        throw new Error('Invalid email or password.');
+        // Check fallback users file in case user registered before MongoDB Atlas was connected
+        const fallbackUsers = this.readFallbackUsers();
+        const fallbackUser = fallbackUsers.find((u) => u.email === normalizedEmail);
+        if (fallbackUser) {
+          try {
+            await UserModel.create({
+              name: fallbackUser.name,
+              email: fallbackUser.email,
+              password: fallbackUser.password,
+            });
+          } catch {
+            // ignore duplicate
+          }
+          userId = fallbackUser.id;
+          userName = fallbackUser.name;
+          storedHash = fallbackUser.password;
+        } else {
+          throw new Error('Invalid email or password.');
+        }
+      } else {
+        userId = user._id.toString();
+        userName = user.name;
+        storedHash = user.password;
       }
-      userId = user._id.toString();
-      userName = user.name;
-      storedHash = user.password;
     } else {
       console.log('[AUTH] MongoDB disconnected. Authenticating user via local fallback store.');
       const users = this.readFallbackUsers();

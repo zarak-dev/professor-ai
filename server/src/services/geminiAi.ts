@@ -8,7 +8,7 @@ export class GeminiService implements ChatAIService {
 
     constructor(apiKey: string, model: string = "gemini-1.5-flash") {
         this.apiKey = apiKey;
-        this.model = model;
+        this.model = process.env.GEMINI_MODEL || model;
         this.gemini = new GoogleGenerativeAI(this.apiKey);
     }
 

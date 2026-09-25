@@ -48,6 +48,4 @@ const VisualizationSchema = new Schema<IVisualization>({
     timestamps: true
 })
 
-VisualizationSchema.index({ doc_id: 1 }, { unique: true });
-
 export default mongoose.model<IVisualization>("Visualization", VisualizationSchema)
