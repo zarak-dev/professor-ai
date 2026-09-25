@@ -16,7 +16,7 @@ import { PDFProcessor } from "../services/pdfProcessor"
 import { QuizService } from "../services/quizService"
 import { FlashcardService } from "../services/flashcardService"
 import { VisualizeService } from "../services/visualizeService"
-import { SupabaseAuthService } from "../services/supabaseAuthService"
+import { LocalAuthService } from "../services/localAuthService"
 
 import { ChatController } from "../controller/chatController"
 import { UploadController } from "../controller/uploadController"
@@ -56,18 +56,12 @@ const quizRepository = new QuizRepository()
 const flashcardRepository = new FlashcardRepository()
 const visualizationRepository = new VisualizationRepository()
 
-const supabaseUrl = process.env.SUPABASE_URL?.trim() || 'https://placeholder.supabase.co'
-const supabaseKey = (process.env.SUPABASE_KEY?.trim() || process.env.SUPABASE_ANON_KEY?.trim()) || 'placeholder_supabase_key'
-
-if (!process.env.SUPABASE_URL || (!process.env.SUPABASE_KEY && !process.env.SUPABASE_ANON_KEY)) {
-    console.warn("[WARN] SUPABASE_URL / SUPABASE_KEY are not set in server/.env. Authentication calls will require valid Supabase credentials.")
-}
-
-const authService = new SupabaseAuthService(supabaseUrl, supabaseKey)
+const jwtSecret = process.env.JWT_SECRET || 'the-professor-local-secret-2026'
+const authService = new LocalAuthService(jwtSecret)
 const authMiddleware = new AuthMiddleware(authService)
 const ownershipMiddleware = new DocumentOwnershipMiddleware(documentRepository)
 
-console.log("Supabase Auth Service initialized.");
+console.log("[AUTH] Local MongoDB Auth Service initialized (JWT + bcrypt, no Supabase required).")
 
 const quizService = new QuizService(aiService, aiParser, quizRepository)
 const flashcardService = new FlashcardService(aiService, aiParser, flashcardRepository)

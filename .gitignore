@@ -26,3 +26,4 @@ yarn-error.log*
 # Unwanted files
 server/test_*.js
 server/uploads/
+server/data/
