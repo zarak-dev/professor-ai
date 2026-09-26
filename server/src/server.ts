@@ -23,9 +23,24 @@ export class AppServer {
     }
 
     private initializeMiddlewares(): void {
-        const allowedOrigins = ['http://localhost:3000', process.env.CLIENT_URL].filter(Boolean) as string[];
+        const allowedOrigins = [
+            'http://localhost:3000',
+            'https://professor-ai-nu.vercel.app',
+            process.env.CLIENT_URL
+        ].filter(Boolean) as string[];
+
         this.app.use(cors({
-            origin: allowedOrigins.length > 0 ? allowedOrigins : 'http://localhost:3000',
+            origin: (origin, callback) => {
+                if (!origin) return callback(null, true);
+                if (
+                    allowedOrigins.includes(origin) ||
+                    origin.endsWith('.vercel.app') ||
+                    origin.startsWith('http://localhost:')
+                ) {
+                    return callback(null, true);
+                }
+                return callback(null, false);
+            },
             credentials: true
         }));
         this.app.use(compression());
